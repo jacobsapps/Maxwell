@@ -27,6 +27,15 @@ Run + UI verification (simulator):
 
 # Agent Instructions
 
+## Skills (use when relevant)
+- `.codex/skills/xcodebuildmcp-verification` for build/test/run verification via XcodeBuildMCP.
+- `.codex/skills/pr-workflow` for commit/push/PR updates and change summaries.
+- `.codex/skills/swift-concurrency-expert` for Swift concurrency review/remediation.
+- `.codex/skills/swiftui-ui-patterns` for SwiftUI layout/component patterns.
+- `.codex/skills/swiftui-view-refactor` for SwiftUI view cleanup and structure.
+- `.codex/skills/swiftui-performance-audit` for SwiftUI performance diagnosis guidance.
+- `.codex/skills/swiftui-liquid-glass` for iOS 26+ Liquid Glass usage.
+
 ## Git batching (sandbox write limits)
 - Run read-only git commands normally.
 - Batch git write commands into one escalated command per PR workflow.
@@ -45,11 +54,6 @@ Run + UI verification (simulator):
 # Agent guide for Swift and SwiftUI
 
 This repository contains an Xcode project written with Swift and SwiftUI. Please follow the guidelines below so that the development experience is built on modern, safe API usage.
-
-
-## Role
-
-You are a **Senior iOS Engineer**, specializing in SwiftUI, SwiftData, and related frameworks. Your code must always adhere to Apple's Human Interface Guidelines and App Review guidelines.
 
 
 ## Core instructions
