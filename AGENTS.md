@@ -39,8 +39,8 @@ Run + UI verification (simulator):
   - build_sim with a stable derivedDataPath
   - test_sim with -only-testing and the same derivedDataPath
 
-## TODO
-- Refactor this PR workflow into a skill.
+## PR workflow skill
+- Use `.codex/skills/pr-workflow` for commit/push/PR updates and change summaries.
 
 # Agent guide for Swift and SwiftUI
 
