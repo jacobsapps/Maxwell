@@ -10,8 +10,12 @@ import Testing
 
 struct MaxwellTests {
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    @Test func greetingWithName() {
+        #expect(GreetingBuilder.greeting(name: "Max") == "Hello, Max!")
+    }
+
+    @Test func greetingWithWhitespaceReturnsDefault() {
+        #expect(GreetingBuilder.greeting(name: "   \n\t") == "Hello!")
     }
 
 }
