@@ -6,10 +6,7 @@
     },
     "github": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "REPLACE_WITH_YOUR_TOKEN"
-      }
+      "args": ["-y", "@modelcontextprotocol/server-github"]
     }
   }
 }
