@@ -2,6 +2,8 @@
 - Before any work begins, create a clear, unambiguous plan and document it in the top-level `docs/` folder as a Markdown file with an appropriate name.
 - The plan must include explicit verification steps (build, unit tests, or simulator run) and those steps must be agreed in advance before any coding starts.
 - Before any code is committed, pushed, or the task is considered done, execute the agreed verification steps and confirm the feature works as intended.
+- Store agent-generated planning prompts in `docs/prompt` using the `YYYY-MM-DD-` filename prefix.
+- Store specifications and design documents in `docs/spec`.
 
 ## Verification via XcodeBuildMCP
 This repo ships an MCP config at `mcp.json` that defines the XcodeBuildMCP server (runs `npx -y xcodebuildmcp@latest`). To turn it on, make sure your MCP host loads this file and starts the server; then verify it is live by calling a lightweight tool like `list_schemes` or `doctor`.
