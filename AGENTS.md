@@ -2,7 +2,7 @@
 - Handle any required git branching or switching first, before changing any files.
 - Before any code changes, create or update a plan in `context/spec/`.
 - Same session = same plan file; edit it as needed.
-- Admin tasks (git status/fetch/pull/branch switch, etc.) never require a plan or session entry.
+- Tasks that don’t involve code changes (git status/fetch/pull/branch switch, etc.) never require a plan or session entry.
 - The plan must include explicit verification steps (build, unit tests, or simulator run) and those steps must be agreed in advance before any coding starts. If verification is obvious (e.g., a file move or rename), proceed without asking and run a basic build/compile step.
 - When describing verification steps in docs or responses, use plain language (e.g., “build and compile”) rather than tool-specific phrasing like derived-data paths.
 - Before any code is committed, pushed, or the task is considered done, execute the agreed verification steps and confirm the feature works as intended.
