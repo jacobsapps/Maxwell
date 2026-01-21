@@ -1,0 +1,1 @@
+Please review the data model documentation created and the light bulb research that was performed. Please take the information in the light bulb research and update the data model markdown just with the properties that we will need to have on the sort of light bulb data models to ensure that we can accurately detail in the app all of the properties a light bulb might have.
