@@ -1,3 +1,9 @@
+user: Asked to refactor Views into feature folders; no new plans, just move files.
+assistant: Reorganized views under `Maxwell/Feature/` and ran a build.
+user: Requested AGENTS.md clarification: single plan per session, no new plans; obvious verification needs no asking.
+assistant: Updated AGENTS.md accordingly and removed the extra refactor plan file.
+user: Requested refactor of Views into feature-based folders with Floor Plan substructure.
+assistant: Acknowledged request; will proceed without creating a new plan document.
 user: Asked for a detailed plan/spec and confirmation it documents the full floor plan design before PR.
 assistant: Expanded spec with full design vision, interaction rules, and next steps; will confirm PR readiness.
 user: Asked to continue and confirmed the provided Floor Plan control/construction design sketch.
