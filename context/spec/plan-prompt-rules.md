@@ -10,7 +10,7 @@
 2. Move existing documentation into `context/` and rename subfolders: `prompt/` → `sessions/`, `spec/` → `prompts/`.
 3. Update `AGENTS.md` to reflect the new folder names and agent-session requirements, including transcript + initial prompt.
 4. Update internal doc references to the new paths.
-5. Create the current session entry in `context/sessions/` and include transcript + initial prompt + plan summary.
+5. Create the current session entry in `context/prompts/` and include transcript + initial prompt + plan summary.
 
 ## Verification
 - Manual check that `context/` exists with `sessions/` and `prompts/`, and that `AGENTS.md` reflects the new rules.

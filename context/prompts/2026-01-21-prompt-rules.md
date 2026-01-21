@@ -9,6 +9,8 @@
 - Assistant: Pulled main, branch with space failed, asked for kebab-case branch name.
 - User: Confirmed kebab-case; told to proceed and update AGENTS.
 - Assistant: Created prompt-rules branch, drafted plan doc, renamed folders, updated rules, opened PR.
+- User: Requested AGENTS wording, folder names context/prompts/spec, and YYYY-MM-DD-name for prompts.
+- Assistant: Added new plan, renamed folders, updated AGENTS and references.
 
 ## Initial Prompt (Full)
 Please look at how the docs folder is structured. It's got prompts and it's got specs. Before you do anything, pull down the main branch and create a new branch called "prompt rules".
@@ -25,13 +27,13 @@ What I want you to do is go to our agent rules and ensure that it's updated to v
 - Define new documentation structure (`context/`, `sessions/`, `prompts/`) and update agent rules accordingly.
 
 ## Decisions
-- Use `context/` as the documentation root, with `sessions/` for agent sessions and `prompts/` for specs/plans.
+- Use `context/` as the documentation root, with `prompts/` for agent sessions and `spec/` for specs/plans.
 
 ## Plan Summary
-- Rename `docs/` to `context/` and adjust subfolders to `sessions/` and `prompts/`.
-- Update `AGENTS.md` with branching-first exception and agent session formatting rules.
+- Rename documentation folders to `context/prompts/` and `context/spec/`.
+- Update `AGENTS.md` with branching-first exception and agent session formatting rules + filename requirements.
 - Update internal references and add the current agent session entry.
 
 ## Progress
-- Renamed documentation folders, moved plans/specs into `context/prompts/`, and added this session entry.
+- Renamed documentation folders to `context/prompts/` and `context/spec/`.
 - Updated `AGENTS.md` and adjusted internal references to the new paths.

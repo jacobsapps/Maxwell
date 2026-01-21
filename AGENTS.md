@@ -1,11 +1,11 @@
 ## Planning and verification requirements
-- Handle any required git branching or switching first, before creating plans or making file changes.
-- Before any work begins, create a clear, unambiguous plan and document it in `context/prompts/` as a Markdown file with an appropriate name.
+- Handle any required git branching or switching first, before changing any files.
+- Before any work begins, create a clear, unambiguous plan and document it in `context/spec/` as a Markdown file with an appropriate name.
 - The plan must include explicit verification steps (build, unit tests, or simulator run) and those steps must be agreed in advance before any coding starts.
 - Before any code is committed, pushed, or the task is considered done, execute the agreed verification steps and confirm the feature works as intended.
-- Create a new agent session entry in `context/sessions/` for every session using the `YYYY-MM-DD-` filename prefix and a short kebab-case title.
+- Create a new agent session entry in `context/prompts/` for every session using the `YYYY-MM-DD-name` filename format (kebab-case after the date).
 - Each agent session file must be updated throughout the session and include: a very terse transcript at the top (one ~15-word line per user/assistant message), the initial user prompt in full, a brief purpose/decisions summary, and the session plan summary.
-- Store specifications, design documents, and standalone plans in `context/prompts/`.
+- Store specifications, design documents, and standalone plans in `context/spec/`.
 
 ## Verification via XcodeBuildMCP
 This repo ships an MCP config at `mcp.json` that defines the XcodeBuildMCP server (runs `npx -y xcodebuildmcp@latest`). To turn it on, make sure your MCP host loads this file and starts the server; then verify it is live by calling a lightweight tool like `list_schemes` or `doctor`.
