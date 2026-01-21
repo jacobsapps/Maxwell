@@ -1,7 +1,9 @@
 ## Planning and verification requirements
 - Handle any required git branching or switching first, before changing any files.
-- Before any work begins, create a clear, unambiguous plan and document it in `context/spec/` as a Markdown file with an appropriate name.
-- The plan must include explicit verification steps (build, unit tests, or simulator run) and those steps must be agreed in advance before any coding starts.
+- Before any work begins in a new session, create a clear, unambiguous plan and document it in `context/spec/` as a Markdown file with an appropriate name.
+- Do not create additional plan/spec files within the same session unless the user explicitly asks. Keep updates in the existing session prompt document instead.
+- The plan must include explicit verification steps (build, unit tests, or simulator run) and those steps must be agreed in advance before any coding starts. If verification is obvious (e.g., a file move or rename), proceed without asking and run a basic build/compile step.
+- When describing verification steps in docs or responses, use plain language (e.g., “build and compile”) rather than tool-specific phrasing like derived-data paths.
 - Before any code is committed, pushed, or the task is considered done, execute the agreed verification steps and confirm the feature works as intended.
 - Create a new agent session entry in `context/prompts/` for every session using the `YYYY-MM-DD-name` filename format (kebab-case after the date).
 - Each agent session file must be updated throughout the session and include: a very terse transcript at the top (one ~15-word line per user/assistant message), the initial user prompt in full, a brief purpose/decisions summary, and the session plan summary.
@@ -143,6 +145,7 @@ If SwiftData is configured to use CloudKit:
 ## Project structure
 
 - Use a consistent project structure, with folder layout determined by app features.
+- Never use spaces in folder names.
 - Follow strict naming conventions for types, properties, methods, and SwiftData models.
 - Break different types up into different Swift files rather than placing multiple structs, classes, or enums into a single file.
 - Write unit tests for core application logic.

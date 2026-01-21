@@ -8,17 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(AppModel.self) private var appModel
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text(GreetingBuilder.greeting(name: "world"))
+        TabView {
+            Tab("Floor Plan", systemImage: "square.grid.3x3") {
+                FloorPlanBuilderView(viewModel: appModel.floorPlanBuilder)
+            }
+            Tab("Interactive", systemImage: "hand.draw") {
+                InteractiveFloorPlanView(viewModel: appModel.floorPlanBuilder)
+            }
+            Tab("Summary", systemImage: "list.bullet.rectangle") {
+                SummaryView(viewModel: appModel.floorPlanBuilder)
+            }
         }
-        .padding()
     }
 }
 
 #Preview {
     ContentView()
+        .environment(AppModel())
 }
