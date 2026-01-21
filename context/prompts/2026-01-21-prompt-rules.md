@@ -11,6 +11,8 @@
 - Assistant: Created prompt-rules branch, drafted plan doc, renamed folders, updated rules, opened PR.
 - User: Requested AGENTS wording, folder names context/prompts/spec, and YYYY-MM-DD-name for prompts.
 - Assistant: Added new plan, renamed folders, updated AGENTS and references.
+- User: Required AGENTS to emphasize branching-first and prompts/spec naming + date format.
+- Assistant: Updated AGENTS, moved docs to context/prompts and context/spec, refreshed references.
 
 ## Initial Prompt (Full)
 Please look at how the docs folder is structured. It's got prompts and it's got specs. Before you do anything, pull down the main branch and create a new branch called "prompt rules".
@@ -24,7 +26,7 @@ Now that you understand exactly what I want now, and obviously you know what get
 What I want you to do is go to our agent rules and ensure that it's updated to very clearly specify how to write and update these prompts per agent session. Make sure this is reflected in our agent rules. Once you've done this, I want you to create a
 
 ## Purpose
-- Define new documentation structure (`context/`, `sessions/`, `prompts/`) and update agent rules accordingly.
+- Define documentation structure (`context/`, `prompts/`, `spec/`) and update agent rules accordingly.
 
 ## Decisions
 - Use `context/` as the documentation root, with `prompts/` for agent sessions and `spec/` for specs/plans.
