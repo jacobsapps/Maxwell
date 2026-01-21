@@ -13,6 +13,8 @@
 - Assistant: Added new plan, renamed folders, updated AGENTS and references.
 - User: Required AGENTS to emphasize branching-first and prompts/spec naming + date format.
 - Assistant: Updated AGENTS, moved docs to context/prompts and context/spec, refreshed references.
+- User: Noted only incorrect item is file name/location in context/spec/2026-01-21-context-structure-update.md.
+- Assistant: Renamed file to match spec naming and corrected its location.
 
 ## Initial Prompt (Full)
 Please look at how the docs folder is structured. It's got prompts and it's got specs. Before you do anything, pull down the main branch and create a new branch called "prompt rules".
