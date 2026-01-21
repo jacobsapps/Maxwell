@@ -1,9 +1,11 @@
 ## Planning and verification requirements
-- Handle any required git branching or switching first, before changing any files.
-- Before any code changes, create or update a plan in `context/spec/`.
-- Same session = same plan file; edit it as needed.
-- Tasks that don’t involve code changes (git status/fetch/pull/branch switch, etc.) never require a plan or session entry.
-- The plan must include explicit verification steps (build, unit tests, or simulator run) and those steps must be agreed in advance before any coding starts. If verification is obvious (e.g., a file move or rename), proceed without asking and run a basic build/compile step.
+- At the start of a new agent session, the default first step is: pull latest `main`, then create/switch to a fresh branch before changing any files (unless the user explicitly says otherwise).
+- A code change means changing executable code. If no executable code is changing, it is not a code change.
+- Plans are only required for executable code changes; do not write a plan for non-code changes.
+- For code changes, create or update a plan in `context/spec/`. Same session = same plan file; edit it as needed.
+- Non-code changes (docs, prompts, specs, git status/fetch/pull/branch switch, etc.) never require a plan or a session entry.
+- For code changes, the plan must include explicit verification steps (build, unit tests, or simulator run) and those steps must be agreed in advance before any coding starts. If verification is obvious (e.g., a file move or rename), proceed without asking and run a basic build/compile step.
+- Non-code changes do not require verification steps.
 - When describing verification steps in docs or responses, use plain language (e.g., “build and compile”) rather than tool-specific phrasing like derived-data paths.
 - Before any code is committed, pushed, or the task is considered done, execute the agreed verification steps and confirm the feature works as intended.
 - Create a new agent session entry in `context/prompts/` for every session that includes code changes using the `YYYY-MM-DD-name` filename format (kebab-case after the date).
