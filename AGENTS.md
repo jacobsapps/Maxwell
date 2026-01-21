@@ -57,6 +57,7 @@ Run + UI verification (simulator):
 - Quick snippet to avoid timeouts:
   - build_sim with a stable derivedDataPath
   - test_sim with -only-testing and the same derivedDataPath
+- If test_sim fails with a missing `MaxwellTests.xctest` bundle after branch switches, clean derived data (`clean` with the same derivedDataPath), then rebuild and rerun tests.
 
 ## PR workflow skill
 - Use `.codex/skills/pr-workflow` for commit/push/PR updates and change summaries.
