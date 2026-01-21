@@ -59,6 +59,15 @@ Defines the data model for Maxwell's floor-plan-based light bulb management. Thi
 ### Bulb Type Catalog (External)
 - Maintained by separate agent/service.
 - Local model stores a stable reference (bulbTypeId) and can cache display name/capabilities if needed for offline use.
+- Bulb type properties to support app detail views:
+  - Identity: id, name, manufacturer (optional), modelNumber (optional).
+  - Technology: technologyType (incandescent, halogen, CFL, linear fluorescent, LED, HID, induction, OLED).
+  - Form factor: fittingFamily, fittingSize, shapeCode.
+  - Color: cctKelvin, cctLabel (warm/neutral/cool), cctHex (UI swatch).
+  - Optics: beamAngleDegrees (optional), reflectorType (PAR/BR/MR, optional), diffusion (clear/frosted, optional).
+  - Electrical: wattage, voltageRange (min/max), dimmable, driverType (LED, optional).
+  - Performance: lumens, efficacyLumensPerWatt (optional), cri (optional), lifetimeHours, warmUpTimeSeconds (optional).
+  - Compliance: certifications (UL/ETL/CE, optional), enclosureRating (optional), mercuryContentMg (CFL/fluorescent, optional).
 
 ## Geometry and Coordinate System
 - Define a floor-level coordinate space.
