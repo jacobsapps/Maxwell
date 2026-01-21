@@ -1,6 +1,6 @@
 ---
 name: sqlite-data-usage
-description: Guidance for working with Point-Free SQLiteData in Maxwell (data layer, repositories, and future CloudKit sync). Use when implementing or reviewing persistence, SQLiteData models, or Factory registrations that touch SQLiteData.
+description: Guidance for working with Point-Free SQLiteData in Maxwell (data layer, repositories, and future CloudKit sync). Use when implementing or reviewing persistence and SQLiteData models.
 ---
 
 # SQLiteData Usage (Maxwell)
@@ -8,19 +8,8 @@ description: Guidance for working with Point-Free SQLiteData in Maxwell (data la
 ## Overview
 SQLiteData is a SQLite-first data layer built on GRDB with Swift macros for schema modeling and property wrappers for reactive fetching. It is designed to mirror SwiftData ergonomics while adding first-class CloudKit sync and sharing support. Use this skill when you are implementing Maxwell persistence, repositories, or data modeling so the data layer remains CloudKit-ready without enabling entitlements yet.
 
-## Primary sources to consult
-- SQLiteData repo: https://github.com/pointfreeco/sqlite-data
-- SQLiteData announcement blog post: https://www.pointfree.co/blog/posts/184-sqlitedata-1-0-an-alternative-to-swiftdata-with-cloudkit-sync-and-sharing
-- DeepWiki (indexes SQLiteData docs and source files):
-  - https://deepwiki.com/pointfreeco/sqlite-data/4.1-database-setup-and-configuration
-  - https://deepwiki.com/pointfreeco/sqlite-data/4.2-data-models-with-@table
-  - https://deepwiki.com/pointfreeco/sqlite-data/4.3-data-fetching-with-property-wrappers
-  - https://deepwiki.com/pointfreeco/sqlite-data/4.4-cloudkit-synchronization
-  - https://deepwiki.com/pointfreeco/sqlite-data/4.5-cloudkit-sharing
-  - https://deepwiki.com/pointfreeco/sqlite-data/7-schema-design-for-cloudkit
-  - https://deepwiki.com/pointfreeco/sqlite-data/8-conflict-resolution-and-merge-strategies
-  - https://deepwiki.com/pointfreeco/sqlite-data/10-cloudkit-assets
-  - https://deepwiki.com/pointfreeco/sqlite-data/5-migrations-and-schema-evolution
+## Sources
+See `references/sqlite-data-sources.md` for the authoritative links used to build this guidance.
 
 ## Maxwell-specific constraints
 - Local-only today: do not add CloudKit entitlements or config yet, but keep the schema and data layer compatible with CloudKit sync.
