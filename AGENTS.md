@@ -2,6 +2,8 @@
 - Before any work begins, create a clear, unambiguous plan and document it in the top-level `docs/` folder as a Markdown file with an appropriate name.
 - The plan must include explicit verification steps (build, unit tests, or simulator run) and those steps must be agreed in advance before any coding starts.
 - Before any code is committed, pushed, or the task is considered done, execute the agreed verification steps and confirm the feature works as intended.
+- Store agent-generated planning prompts in `docs/prompt` using the `YYYY-MM-DD-` filename prefix.
+- Store specifications and design documents in `docs/spec`.
 
 ## Verification via XcodeBuildMCP
 This repo ships an MCP config at `mcp.json` that defines the XcodeBuildMCP server (runs `npx -y xcodebuildmcp@latest`). To turn it on, make sure your MCP host loads this file and starts the server; then verify it is live by calling a lightweight tool like `list_schemes` or `doctor`.
@@ -40,6 +42,7 @@ Run + UI verification (simulator):
 - `.codex/skills/swiftui-view-refactor` for SwiftUI view cleanup and structure.
 - `.codex/skills/swiftui-performance-audit` for SwiftUI performance diagnosis guidance.
 - `.codex/skills/swiftui-liquid-glass` for iOS 26+ Liquid Glass usage.
+- `.codex/skills/sqlite-data-usage` for SQLiteData persistence guidance and references.
 
 ## Git batching (sandbox write limits)
 - Run read-only git commands normally.
@@ -60,6 +63,23 @@ Run + UI verification (simulator):
 
 This repository contains an Xcode project written with Swift and SwiftUI. Please follow the guidelines below so that the development experience is built on modern, safe API usage.
 
+## Architecture (Maxwell)
+- Three tabs: Floor Plan (builder, B1 focus), Interactive Floor Plan, Summary.
+- V1 floor plan editor: rectangles only; expand later to custom/merged shapes.
+- Gestures: touch-to-join squares, long-press to add bulbs, drag to move.
+- Prefer default SwiftUI components where possible.
+- MVVM with `@Observable` view models and a shared data source.
+- Factory for DI; PointFree SQLite for local persistence.
+- CloudKit sync is deferred; no entitlements/configuration yet. Design the data layer so it can be added later.
+- Main-actor constrained by default; any background work must use the `@concurrent` attribute on a function.
+
+Example:
+```swift
+@concurrent
+func loadBulbStates() async throws -> [BulbState] {
+    // background work here
+}
+```
 
 ## Core instructions
 
@@ -72,8 +92,8 @@ This repository contains an Xcode project written with Swift and SwiftUI. Please
 
 ## Swift instructions
 
-- Always mark `@Observable` classes with `@MainActor`.
 - Assume strict Swift concurrency rules are being applied.
+- The app is main-actor constrained by default; use the `@concurrent` attribute on a function for background work.
 - Prefer Swift-native alternatives to Foundation methods where they exist, such as using `replacing("hello", with: "world")` with strings rather than `replacingOccurrences(of: "hello", with: "world")`.
 - Prefer modern Foundation API, for example `URL.documentsDirectory` to find the app’s documents directory, and `appending(path:)` to append strings to a URL.
 - Never use C-style number formatting such as `Text(String(format: "%.2f", abs(myNumber)))`; always use `Text(abs(change), format: .number.precision(.fractionLength(2)))` instead.

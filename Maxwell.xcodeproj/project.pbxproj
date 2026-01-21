@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		168436752F20E3A3005AFA5B /* SQLiteData in Frameworks */ = {isa = PBXBuildFile; productRef = 168436742F20E3A3005AFA5B /* SQLiteData */; };
+		168436772F20E3A3005AFA5B /* SQLiteDataTestSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 168436762F20E3A3005AFA5B /* SQLiteDataTestSupport */; };
+		1684367A2F20E3BF005AFA5B /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 168436792F20E3BF005AFA5B /* Factory */; };
+		1684367C2F20E3BF005AFA5B /* FactoryTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 1684367B2F20E3BF005AFA5B /* FactoryTesting */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		1607CAFF2F1FC30C007E8B3A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +59,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				168436752F20E3A3005AFA5B /* SQLiteData in Frameworks */,
+				1684367A2F20E3BF005AFA5B /* Factory in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +68,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1684367C2F20E3BF005AFA5B /* FactoryTesting in Frameworks */,
+				168436772F20E3A3005AFA5B /* SQLiteDataTestSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +123,8 @@
 			);
 			name = Maxwell;
 			packageProductDependencies = (
+				168436742F20E3A3005AFA5B /* SQLiteData */,
+				168436792F20E3BF005AFA5B /* Factory */,
 			);
 			productName = Maxwell;
 			productReference = 1607CAF12F1FC30A007E8B3A /* Maxwell.app */;
@@ -135,6 +148,8 @@
 			);
 			name = MaxwellTests;
 			packageProductDependencies = (
+				168436762F20E3A3005AFA5B /* SQLiteDataTestSupport */,
+				1684367B2F20E3BF005AFA5B /* FactoryTesting */,
 			);
 			productName = MaxwellTests;
 			productReference = 1607CAFE2F1FC30C007E8B3A /* MaxwellTests.xctest */;
@@ -195,6 +210,10 @@
 			);
 			mainGroup = 1607CAE82F1FC30A007E8B3A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				168436732F20E3A3005AFA5B /* XCRemoteSwiftPackageReference "sqlite-data" */,
+				168436782F20E3BF005AFA5B /* XCRemoteSwiftPackageReference "Factory" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1607CAF22F1FC30A007E8B3A /* Products */;
 			projectDirPath = "";
@@ -416,6 +435,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -448,6 +468,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -578,6 +599,48 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		168436732F20E3A3005AFA5B /* XCRemoteSwiftPackageReference "sqlite-data" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/sqlite-data";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.0;
+			};
+		};
+		168436782F20E3BF005AFA5B /* XCRemoteSwiftPackageReference "Factory" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hmlongco/Factory";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		168436742F20E3A3005AFA5B /* SQLiteData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 168436732F20E3A3005AFA5B /* XCRemoteSwiftPackageReference "sqlite-data" */;
+			productName = SQLiteData;
+		};
+		168436762F20E3A3005AFA5B /* SQLiteDataTestSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 168436732F20E3A3005AFA5B /* XCRemoteSwiftPackageReference "sqlite-data" */;
+			productName = SQLiteDataTestSupport;
+		};
+		168436792F20E3BF005AFA5B /* Factory */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 168436782F20E3BF005AFA5B /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = Factory;
+		};
+		1684367B2F20E3BF005AFA5B /* FactoryTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 168436782F20E3BF005AFA5B /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = FactoryTesting;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1607CAE92F1FC30A007E8B3A /* Project object */;
 }
