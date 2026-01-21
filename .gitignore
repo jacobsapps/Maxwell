@@ -1,0 +1,22 @@
+.DS_Store
+
+# Xcode user data
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad
+
+# Xcode build artifacts
+DerivedData/
+build/
+*.hmap
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+# SwiftPM
+.swiftpm/
+.build/
+
+# Source control metadata
+*.xccheckout
+*.xcscmblueprint
