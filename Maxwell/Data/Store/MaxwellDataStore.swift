@@ -52,6 +52,22 @@ struct MaxwellDataStore {
         }
     }
 
+    func updateFloorName(id: UUID, name: String) throws {
+        try dbWriter.write { db in
+            try Floor.find(id)
+                .update { $0.name = name }
+                .execute(db)
+        }
+    }
+
+    func updateFloorOrderIndex(id: UUID, orderIndex: Int) throws {
+        try dbWriter.write { db in
+            try Floor.find(id)
+                .update { $0.orderIndex = orderIndex }
+                .execute(db)
+        }
+    }
+
     func createRoom(
         floorId: UUID,
         name: String,
@@ -88,6 +104,25 @@ struct MaxwellDataStore {
     func deleteRoom(id: UUID) throws {
         try dbWriter.write { db in
             try Room.find(id).delete().execute(db)
+        }
+    }
+
+    func updateRoomTransform(
+        id: UUID,
+        translationX: Double,
+        translationY: Double,
+        rotationRadians: Double,
+        scale: Double = 1
+    ) throws {
+        try dbWriter.write { db in
+            try Room.find(id)
+                .update {
+                    $0.transformTranslationX = translationX
+                    $0.transformTranslationY = translationY
+                    $0.transformRotationRadians = rotationRadians
+                    $0.transformScale = scale
+                }
+                .execute(db)
         }
     }
 
@@ -131,6 +166,17 @@ struct MaxwellDataStore {
         }
     }
 
+    func updateShapeSize(id: UUID, width: Double, height: Double) throws {
+        try dbWriter.write { db in
+            try Shape.find(id)
+                .update {
+                    $0.sizeWidth = width
+                    $0.sizeHeight = height
+                }
+                .execute(db)
+        }
+    }
+
     func createBulb(
         roomId: UUID,
         name: String,
@@ -162,6 +208,53 @@ struct MaxwellDataStore {
     func deleteBulb(id: UUID) throws {
         try dbWriter.write { db in
             try Bulb.find(id).delete().execute(db)
+        }
+    }
+
+    func updateBulbRoom(id: UUID, roomId: UUID) throws {
+        try dbWriter.write { db in
+            try Bulb.find(id)
+                .update { $0.roomId = roomId }
+                .execute(db)
+        }
+    }
+
+    func updateBulbAndPlacement(
+        id: UUID,
+        roomId: UUID,
+        positionX: Double,
+        positionY: Double,
+        orientationRadians: Double = 0
+    ) throws -> UUID {
+        try dbWriter.write { db in
+            try Bulb.find(id)
+                .update { $0.roomId = roomId }
+                .execute(db)
+
+            if let placement = try BulbPlacement.all
+                .where({ row in row.bulbId == id })
+                .fetchOne(db)
+            {
+                try BulbPlacement.find(placement.id)
+                    .update {
+                        $0.roomId = roomId
+                        $0.positionX = positionX
+                        $0.positionY = positionY
+                        $0.orientationRadians = orientationRadians
+                    }
+                    .execute(db)
+                return placement.id
+            }
+
+            let placement = BulbPlacement(
+                bulbId: id,
+                roomId: roomId,
+                positionX: positionX,
+                positionY: positionY,
+                orientationRadians: orientationRadians
+            )
+            try BulbPlacement.insert { placement }.execute(db)
+            return placement.id
         }
     }
 
@@ -198,6 +291,25 @@ struct MaxwellDataStore {
     func deleteBulbPlacement(id: UUID) throws {
         try dbWriter.write { db in
             try BulbPlacement.find(id).delete().execute(db)
+        }
+    }
+
+    func updateBulbPlacement(
+        id: UUID,
+        roomId: UUID,
+        positionX: Double,
+        positionY: Double,
+        orientationRadians: Double = 0
+    ) throws {
+        try dbWriter.write { db in
+            try BulbPlacement.find(id)
+                .update {
+                    $0.roomId = roomId
+                    $0.positionX = positionX
+                    $0.positionY = positionY
+                    $0.orientationRadians = orientationRadians
+                }
+                .execute(db)
         }
     }
 }
