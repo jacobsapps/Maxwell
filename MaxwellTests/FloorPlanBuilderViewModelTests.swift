@@ -43,4 +43,18 @@ struct FloorPlanBuilderViewModelTests {
 
         #expect(viewModel.overlaps(candidate: candidate) == true)
     }
+
+    @Test @MainActor func rotatedRoomContainmentUsesRoomRotation() throws {
+        let viewModel = try makeViewModel()
+        let rotation = Angle(degrees: 45)
+        viewModel.addRoom(center: .zero, size: CGSize(width: 100, height: 60), rotation: rotation)
+
+        let insideLocal = CGPoint(x: 20, y: 0)
+        let insideGlobal = insideLocal.rotated(by: rotation.radians)
+        #expect(viewModel.roomContaining(point: insideGlobal) != nil)
+
+        let outsideLocal = CGPoint(x: 60, y: 0)
+        let outsideGlobal = outsideLocal.rotated(by: rotation.radians)
+        #expect(viewModel.roomContaining(point: outsideGlobal) == nil)
+    }
 }

@@ -10,10 +10,9 @@ import SwiftUI
 struct FloorPlanCanvasView: View {
     @Bindable var viewModel: FloorPlanBuilderViewModel
     @Binding var placementState: FloorPlanPlacementState?
+    @Binding var canvasTransform: FloorPlanCanvasTransform
 
-    @State private var canvasScale: CGFloat = 1
-    @State private var canvasRotation: Angle = .zero
-    @State private var canvasOffset: CGSize = .zero
+    @State private var isContentDragActive = false
 
     @GestureState private var panTranslation: CGSize = .zero
     @GestureState private var zoomScale: CGFloat = 1
@@ -25,11 +24,11 @@ struct FloorPlanCanvasView: View {
     var body: some View {
         GeometryReader { proxy in
             let center = CGPoint(x: proxy.size.width / 2, y: proxy.size.height / 2)
-            let transformScale = canvasScale * zoomScale
-            let transformRotation = canvasRotation + rotationDelta
+            let transformScale = canvasTransform.scale * zoomScale
+            let transformRotation = canvasTransform.rotation + rotationDelta
             let transformOffset = CGSize(
-                width: canvasOffset.width + panTranslation.width,
-                height: canvasOffset.height + panTranslation.height
+                width: canvasTransform.offset.width + panTranslation.width,
+                height: canvasTransform.offset.height + panTranslation.height
             )
 
             ZStack {
@@ -42,6 +41,8 @@ struct FloorPlanCanvasView: View {
                     transformScale: transformScale,
                     transformRotation: transformRotation,
                     transformOffset: transformOffset,
+                    isPlacementActive: placementState != nil,
+                    isContentDragActive: $isContentDragActive,
                     viewModel: viewModel
                 )
 
@@ -57,6 +58,7 @@ struct FloorPlanCanvasView: View {
             }
             .coordinateSpace(name: "FloorPlanCanvas")
             .contentShape(.rect)
+            .accessibilityIdentifier("FloorPlanCanvas")
             .onChange(of: placementState) { _, newValue in
                 if newValue == nil {
                     placementBaseSize = nil
@@ -66,21 +68,28 @@ struct FloorPlanCanvasView: View {
             .simultaneousGesture(panGesture())
             .simultaneousGesture(zoomGesture())
             .simultaneousGesture(rotationGesture())
-            .simultaneousGesture(placementGesture(center: center, transformScale: transformScale, transformOffset: transformOffset))
+            .simultaneousGesture(
+                placementGesture(
+                    center: center,
+                    transformScale: transformScale,
+                    transformRotation: transformRotation,
+                    transformOffset: transformOffset
+                )
+            )
         }
     }
 
     private func panGesture() -> some Gesture {
         DragGesture()
             .updating($panTranslation) { value, state, _ in
-                guard placementState == nil else { return }
+                guard placementState == nil, isContentDragActive == false else { return }
                 state = value.translation
             }
             .onEnded { value in
-                guard placementState == nil else { return }
-                canvasOffset = CGSize(
-                    width: canvasOffset.width + value.translation.width,
-                    height: canvasOffset.height + value.translation.height
+                guard placementState == nil, isContentDragActive == false else { return }
+                canvasTransform.offset = CGSize(
+                    width: canvasTransform.offset.width + value.translation.width,
+                    height: canvasTransform.offset.height + value.translation.height
                 )
             }
     }
@@ -99,12 +108,13 @@ struct FloorPlanCanvasView: View {
                 }
             }
             .updating($zoomScale) { value, state, _ in
-                guard placementState == nil else { return }
+                guard placementState == nil, isContentDragActive == false else { return }
                 state = value
             }
             .onEnded { value in
                 if placementState == nil {
-                    canvasScale = max(0.2, min(canvasScale * value, 4))
+                    guard isContentDragActive == false else { return }
+                    canvasTransform.scale = max(0.2, min(canvasTransform.scale * value, 4))
                     return
                 }
                 guard var placement = placementState, placement.item == .room else { return }
@@ -129,12 +139,13 @@ struct FloorPlanCanvasView: View {
                 }
             }
             .updating($rotationDelta) { value, state, _ in
-                guard placementState == nil else { return }
+                guard placementState == nil, isContentDragActive == false else { return }
                 state = value
             }
             .onEnded { value in
                 if placementState == nil {
-                    canvasRotation += value
+                    guard isContentDragActive == false else { return }
+                    canvasTransform.rotation += value
                     return
                 }
                 guard var placement = placementState, placement.item == .room else { return }
@@ -148,19 +159,32 @@ struct FloorPlanCanvasView: View {
     private func placementGesture(
         center: CGPoint,
         transformScale: CGFloat,
+        transformRotation: Angle,
         transformOffset: CGSize
     ) -> some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged { value in
                 guard var placement = placementState else { return }
-                let location = canvasPoint(from: value.location, center: center, transformScale: transformScale, transformOffset: transformOffset)
+                let location = canvasPoint(
+                    from: value.location,
+                    center: center,
+                    transformScale: transformScale,
+                    transformRotation: transformRotation,
+                    transformOffset: transformOffset
+                )
                 placement.location = location
                 updatePlacementOverlap(&placement)
                 placementState = placement
             }
             .onEnded { value in
                 guard var placement = placementState else { return }
-                let location = canvasPoint(from: value.location, center: center, transformScale: transformScale, transformOffset: transformOffset)
+                let location = canvasPoint(
+                    from: value.location,
+                    center: center,
+                    transformScale: transformScale,
+                    transformRotation: transformRotation,
+                    transformOffset: transformOffset
+                )
                 placement.location = location
                 commitPlacement(placement)
             }
@@ -170,13 +194,14 @@ struct FloorPlanCanvasView: View {
         from viewPoint: CGPoint,
         center: CGPoint,
         transformScale: CGFloat,
+        transformRotation: Angle,
         transformOffset: CGSize
     ) -> CGPoint {
         let translatedX = viewPoint.x - center.x - transformOffset.width
         let translatedY = viewPoint.y - center.y - transformOffset.height
-        let scaledX = translatedX / transformScale
-        let scaledY = translatedY / transformScale
-        return CGPoint(x: scaledX, y: scaledY)
+        let translated = CGPoint(x: translatedX, y: translatedY)
+        let rotated = translated.rotated(by: -transformRotation.radians)
+        return CGPoint(x: rotated.x / transformScale, y: rotated.y / transformScale)
     }
 
     private func commitPlacement(_ placement: FloorPlanPlacementState) {

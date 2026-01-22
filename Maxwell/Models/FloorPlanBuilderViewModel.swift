@@ -223,7 +223,7 @@ final class FloorPlanBuilderViewModel {
     }
 
     func roomContaining(point: CGPoint) -> FloorPlanRoom? {
-        selectedFloor.rooms.first(where: { $0.rect.contains(point) })
+        selectedFloor.rooms.first(where: { $0.contains(point: point) })
     }
 
     func overlaps(candidate: FloorPlanRoom, excluding roomID: UUID? = nil) -> Bool {
@@ -231,7 +231,7 @@ final class FloorPlanBuilderViewModel {
             if let roomID, room.id == roomID {
                 return false
             }
-            return room.rect.intersects(candidate.rect)
+            return room.overlaps(with: candidate)
         }
     }
 
@@ -371,16 +371,5 @@ final class FloorPlanBuilderViewModel {
 
     private func globalPoint(from local: CGPoint, center: CGPoint, rotation: Angle) -> CGPoint {
         Self.globalPoint(from: local, center: center, rotation: rotation)
-    }
-}
-
-private extension CGPoint {
-    func rotated(by radians: Double) -> CGPoint {
-        let cosine = cos(radians)
-        let sine = sin(radians)
-        return CGPoint(
-            x: x * cosine - y * sine,
-            y: x * sine + y * cosine
-        )
     }
 }
