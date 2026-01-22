@@ -14,7 +14,6 @@ struct FloorPlanIconButton: View {
 
     var body: some View {
         Button(label, systemImage: symbol, action: action)
-            .font(.caption)
             .frame(maxWidth: .infinity)
             .floorPlanGlassButtonStyle()
     }

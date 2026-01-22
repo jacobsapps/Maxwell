@@ -12,15 +12,15 @@ struct FloorPlanFloorSelectorView: View {
     let controlsHidden: Bool
 
     @ScaledMetric(relativeTo: .body) private var panelWidth: CGFloat = 96
-    @ScaledMetric(relativeTo: .body) private var verticalPadding: CGFloat = 12
-    @ScaledMetric(relativeTo: .body) private var itemSpacing: CGFloat = 10
+    @ScaledMetric(relativeTo: .body) private var verticalPadding: CGFloat = BulbSpacing.md
+    @ScaledMetric(relativeTo: .body) private var itemSpacing: CGFloat = BulbSpacing.sm
 
     @State private var isRenaming = false
     @State private var renameText = ""
     @State private var renameFloorID: UUID?
 
     var body: some View {
-        FloorPlanGlassPanel(cornerRadius: 20) {
+        FloorPlanGlassPanel(cornerRadius: BulbMetrics.cornerRadius) {
             VStack(spacing: itemSpacing) {
                 FloorPlanIconButton(symbol: "plus", label: "Add Above") {
                     viewModel.addFloorAbove()
