@@ -8,6 +8,8 @@ User: Confirmed build and unit tests.
 User: Requested removing Interactive tab so tabs are Floor Plan, Summary, Bulb Guide.
 Assistant: Proposed plan with simulator verification and asked for confirmation.
 User: Approved and asked to update PR quickly.
+User: Merged main changes affecting tabs and requested conflict resolution + PR update.
+User: Asked to only build and compile for verification.
 
 Initial user prompt:
 you are in charge of building the third and final tab in this app: The Bulb Data section.
@@ -22,6 +24,7 @@ Purpose / Decisions Summary:
 - Add fittings imagery from context assets for the fittings section.
 - Verification includes build and unit tests.
 - Remove the Interactive tab so the main tabs are Floor Plan, Summary, and Bulb Guide.
+- Merge latest main changes and resolve tab conflict to keep the three-tab layout.
 
 Session Plan Summary:
 - Review light-bulb research and fittings assets to define the data categories.
@@ -29,3 +32,4 @@ Session Plan Summary:
 - Wire in fittings imagery and update the tab bar entry.
 - Verify by building and compiling the app in the simulator and running unit tests.
 - Remove the Interactive tab and verify the tab bar order in the simulator.
+- Sync main, resolve the ContentView tab conflict, and build/compile in the simulator.
