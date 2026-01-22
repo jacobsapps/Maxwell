@@ -11,15 +11,14 @@ struct FloorPlanRoomView: View {
     let room: FloorPlanRoom
     let center: CGPoint
     let transformScale: CGFloat
+    let transformRotation: Angle
+    @Binding var isContentDragActive: Bool
     @Bindable var viewModel: FloorPlanBuilderViewModel
 
     @GestureState private var dragTranslation: CGSize = .zero
 
     var body: some View {
-        let adjustedTranslation = CGSize(
-            width: dragTranslation.width / transformScale,
-            height: dragTranslation.height / transformScale
-        )
+        let adjustedTranslation = adjustedTranslation(for: dragTranslation)
         let proposedCenter = CGPoint(
             x: room.center.x + adjustedTranslation.width,
             y: room.center.y + adjustedTranslation.height
@@ -37,18 +36,20 @@ struct FloorPlanRoomView: View {
             .position(x: center.x + proposedCenter.x, y: center.y + proposedCenter.y)
             .gesture(roomDragGesture(isOverlapping: isOverlapping))
             .accessibilityLabel(Text("Room"))
+            .accessibilityIdentifier("FloorPlanRoom")
     }
 
     private func roomDragGesture(isOverlapping: Bool) -> some Gesture {
         DragGesture()
+            .onChanged { _ in
+                isContentDragActive = true
+            }
             .updating($dragTranslation) { value, state, _ in
                 state = value.translation
             }
             .onEnded { value in
-                let adjustedTranslation = CGSize(
-                    width: value.translation.width / transformScale,
-                    height: value.translation.height / transformScale
-                )
+                isContentDragActive = false
+                let adjustedTranslation = adjustedTranslation(for: value.translation)
                 let proposedCenter = CGPoint(
                     x: room.center.x + adjustedTranslation.width,
                     y: room.center.y + adjustedTranslation.height
@@ -64,5 +65,14 @@ struct FloorPlanRoomView: View {
                 }
                 viewModel.moveRoom(id: room.id, center: proposedCenter)
             }
+    }
+
+    private func adjustedTranslation(for translation: CGSize) -> CGSize {
+        let scaled = CGPoint(
+            x: translation.width / transformScale,
+            y: translation.height / transformScale
+        )
+        let rotated = scaled.rotated(by: -transformRotation.radians)
+        return CGSize(width: rotated.x, height: rotated.y)
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct FloorPlanControlsOverlayView: View {
     @Bindable var viewModel: FloorPlanBuilderViewModel
     @Binding var placementState: FloorPlanPlacementState?
+    @Binding var canvasTransform: FloorPlanCanvasTransform
 
     @ScaledMetric(relativeTo: .body) private var horizontalPadding: CGFloat = BulbSpacing.lg
     @ScaledMetric(relativeTo: .body) private var glassSpacing: CGFloat = BulbSpacing.xl
@@ -35,8 +36,19 @@ struct FloorPlanControlsOverlayView: View {
         HStack {
             FloorPlanFloorSelectorView(viewModel: viewModel, controlsHidden: controlsHidden)
             Spacer(minLength: 0)
-            FloorPlanPaletteView(controlsHidden: controlsHidden) { item in
-                placementState = FloorPlanPlacementState(item: item)
+            VStack(spacing: glassSpacing) {
+                FloorPlanResetViewButton(
+                    controlsHidden: controlsHidden,
+                    isEnabled: canvasTransform.isIdentity == false
+                ) {
+                    withAnimation(.snappy) {
+                        canvasTransform = .identity
+                    }
+                }
+
+                FloorPlanPaletteView(controlsHidden: controlsHidden) { item in
+                    placementState = FloorPlanPlacementState(item: item)
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
