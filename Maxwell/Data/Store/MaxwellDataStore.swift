@@ -219,6 +219,45 @@ struct MaxwellDataStore {
         }
     }
 
+    func updateBulbAndPlacement(
+        id: UUID,
+        roomId: UUID,
+        positionX: Double,
+        positionY: Double,
+        orientationRadians: Double = 0
+    ) throws -> UUID {
+        try dbWriter.write { db in
+            try Bulb.find(id)
+                .update { $0.roomId = roomId }
+                .execute(db)
+
+            if let placement = try BulbPlacement.all
+                .where({ row in row.bulbId == id })
+                .fetchOne(db)
+            {
+                try BulbPlacement.find(placement.id)
+                    .update {
+                        $0.roomId = roomId
+                        $0.positionX = positionX
+                        $0.positionY = positionY
+                        $0.orientationRadians = orientationRadians
+                    }
+                    .execute(db)
+                return placement.id
+            }
+
+            let placement = BulbPlacement(
+                bulbId: id,
+                roomId: roomId,
+                positionX: positionX,
+                positionY: positionY,
+                orientationRadians: orientationRadians
+            )
+            try BulbPlacement.insert { placement }.execute(db)
+            return placement.id
+        }
+    }
+
     func createBulbPlacement(
         bulbId: UUID,
         roomId: UUID,

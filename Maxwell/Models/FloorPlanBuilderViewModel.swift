@@ -210,23 +210,13 @@ final class FloorPlanBuilderViewModel {
             floor.bulbs[index].roomID = roomID
         }
         do {
-            try store.updateBulbRoom(id: id, roomId: roomID)
-            if let placementId = bulbPlacementIDs[id] {
-                try store.updateBulbPlacement(
-                    id: placementId,
-                    roomId: roomID,
-                    positionX: Double(local.x),
-                    positionY: Double(local.y)
-                )
-            } else {
-                let placement = try store.createBulbPlacement(
-                    bulbId: id,
-                    roomId: roomID,
-                    positionX: Double(local.x),
-                    positionY: Double(local.y)
-                )
-                bulbPlacementIDs[id] = placement.id
-            }
+            let placementId = try store.updateBulbAndPlacement(
+                id: id,
+                roomId: roomID,
+                positionX: Double(local.x),
+                positionY: Double(local.y)
+            )
+            bulbPlacementIDs[id] = placementId
         } catch {
             assertionFailure("Failed to move bulb: \(error)")
         }

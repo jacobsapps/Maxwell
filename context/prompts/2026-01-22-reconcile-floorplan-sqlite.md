@@ -5,6 +5,7 @@ user: Approved plan, emphasized Factory DI for datastore services, asked about D
 assistant: Agreed to separate UI models from SQLite models with mapping, continued implementation.
 user: Confirmed to continue.
 assistant: Implemented SQLite-backed persistence with mapping and Factory DI; build and tests passed.
+assistant: Adjusted bulb move to update bulb + placement atomically; reran build/tests.
 
 Initial User Prompt:
 We've built a floor plan UI demo, and we've also got a SQLite data model that is going to be the data layer of our app. Can you please reconcile them so that the floor plan directly saves into the SQLite data model?
