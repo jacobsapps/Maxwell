@@ -24,6 +24,7 @@ struct FloorPlanFloorButton: View {
             Text(title)
                 .font(.caption)
                 .bold()
+                .minimumScaleFactor(0.8)
         }
     }
 }

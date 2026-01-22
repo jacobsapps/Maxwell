@@ -21,8 +21,22 @@ struct FloorPlanPaletteItemButton: View {
             action: action
         ) {
             Label(item.title, systemImage: item.systemImage)
-                .labelStyle(.iconOnly)
-                .font(.callout)
+                .labelStyle(FloorPlanVerticalLabelStyle())
         }
+    }
+}
+
+private struct FloorPlanVerticalLabelStyle: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        VStack(spacing: BulbSpacing.xs) {
+            configuration.icon
+                .font(.title3)
+            configuration.title
+                .font(.caption)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

@@ -11,7 +11,7 @@ struct FloorPlanFloorSelectorView: View {
     @Bindable var viewModel: FloorPlanBuilderViewModel
     let controlsHidden: Bool
 
-    @ScaledMetric(relativeTo: .body) private var segmentSize: CGFloat = 30
+    @ScaledMetric(relativeTo: .body) private var segmentSize: CGFloat = 34
 
     @State private var isRenaming = false
     @State private var renameText = ""
@@ -25,7 +25,7 @@ struct FloorPlanFloorSelectorView: View {
 
             ForEach(viewModel.floors.enumerated(), id: \.element.id) { _, floor in
                 FloorPlanFloorButton(
-                    title: floor.name,
+                    title: displayLabel(for: floor.name),
                     isSelected: floor.id == viewModel.selectedFloorID,
                     position: .middle,
                     size: segmentSize
@@ -70,5 +70,14 @@ struct FloorPlanFloorSelectorView: View {
 
     private var horizontalOffset: CGFloat {
         segmentSize * 1.2
+    }
+
+    private func displayLabel(for name: String) -> String {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let prefix = trimmed.prefix(2).uppercased()
+        if prefix.isEmpty {
+            return "--"
+        }
+        return prefix
     }
 }

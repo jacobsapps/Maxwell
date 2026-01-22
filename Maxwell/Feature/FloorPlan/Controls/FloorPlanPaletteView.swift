@@ -11,8 +11,8 @@ struct FloorPlanPaletteView: View {
     let controlsHidden: Bool
     let onSelect: (FloorPlanPaletteItem) -> Void
 
-    @ScaledMetric(relativeTo: .body) private var panelWidth: CGFloat = 40
-    @ScaledMetric(relativeTo: .body) private var itemHeight: CGFloat = 44
+    @ScaledMetric(relativeTo: .body) private var panelWidth: CGFloat = 60
+    @ScaledMetric(relativeTo: .body) private var itemHeight: CGFloat = 70
 
     var body: some View {
         let items = FloorPlanPaletteItem.allCases

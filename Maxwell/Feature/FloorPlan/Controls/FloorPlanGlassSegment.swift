@@ -104,28 +104,17 @@ private struct FloorPlanGlassSegmentBackground: View {
             style: .continuous
         )
 
-        Group {
-            if #available(iOS 26, *) {
-                Color.clear
-                    .background(Color.bulbSurface, in: shape)
-                    .background(BulbGradients.glassSheen, in: shape)
-                    .glassEffect(.regular.interactive(), in: shape)
-            } else {
-                Color.clear
-                    .background(Color.bulbSurface, in: shape)
-                    .background(BulbGradients.glassSheen, in: shape)
-                    .background(.ultraThinMaterial, in: shape)
-            }
-        }
+        Color.clear
+            .background(Color.bulbSurface, in: shape)
         .overlay(
             Group {
                 if isSelected {
-                    shape.fill(Color.bulbGlow.opacity(0.25))
+                    shape.stroke(Color.bulbGlow.opacity(0.6), lineWidth: 1)
                 }
             }
         )
         .overlay(
-            shape.stroke(Color.bulbEdge.opacity(0.6), lineWidth: BulbMetrics.borderWidth)
+            shape.stroke(Color.bulbEdge.opacity(0.7), lineWidth: 1)
         )
         .clipShape(shape)
     }
