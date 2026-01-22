@@ -14,6 +14,7 @@ User: told assistant to continue.
 Assistant: removed design system styling, cleaned floor plan visuals, and deleted interactive view code.
 Assistant: built and compiled with XcodeBuildMCP; captured tab screenshots via simulator recording.
 User: requested using XcodeBuildMCP for verification.
+Assistant: created PR with screenshots after build/compile verification.
 
 Initial user prompt:
 hey, I have been looking through the app that we've got here, and I think that the design system looks terrible. All of the components for stuff like lists have awful colour schemes attached to them and do not look good at all.
