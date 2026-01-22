@@ -11,51 +11,43 @@ struct FloorPlanFloorSelectorView: View {
     @Bindable var viewModel: FloorPlanBuilderViewModel
     let controlsHidden: Bool
 
-    @ScaledMetric(relativeTo: .body) private var panelWidth: CGFloat = 96
-    @ScaledMetric(relativeTo: .body) private var verticalPadding: CGFloat = BulbSpacing.md
-    @ScaledMetric(relativeTo: .body) private var itemSpacing: CGFloat = BulbSpacing.sm
+    @ScaledMetric(relativeTo: .body) private var segmentSize: CGFloat = 34
 
     @State private var isRenaming = false
     @State private var renameText = ""
     @State private var renameFloorID: UUID?
 
     var body: some View {
-        FloorPlanGlassPanel(cornerRadius: BulbMetrics.cornerRadius) {
-            VStack(spacing: itemSpacing) {
-                FloorPlanIconButton(symbol: "plus", label: "Add Above") {
-                    viewModel.addFloorAbove()
-                }
-
-                ScrollView {
-                    VStack(spacing: itemSpacing) {
-                        ForEach(viewModel.floors) { floor in
-                            FloorPlanFloorButton(
-                                title: floor.name,
-                                isSelected: floor.id == viewModel.selectedFloorID
-                            ) {
-                                viewModel.selectFloor(id: floor.id)
-                            }
-                            .simultaneousGesture(
-                                LongPressGesture(minimumDuration: 0.4)
-                                    .onEnded { _ in
-                                        renameFloorID = floor.id
-                                        renameText = floor.name
-                                        isRenaming = true
-                                    }
-                            )
-                        }
-                    }
-                }
-                .scrollIndicators(.hidden)
-
-                FloorPlanIconButton(symbol: "plus", label: "Add Below") {
-                    viewModel.addFloorBelow()
-                }
+        VStack(spacing: 0) {
+            FloorPlanIconButton(symbol: "plus", label: "Add Floor Above", position: .top, size: segmentSize) {
+                viewModel.addFloorAbove()
             }
-            .padding(.vertical, verticalPadding)
-            .frame(width: panelWidth)
+
+            ForEach(viewModel.floors.enumerated(), id: \.element.id) { _, floor in
+                FloorPlanFloorButton(
+                    title: displayLabel(for: floor.name),
+                    isSelected: floor.id == viewModel.selectedFloorID,
+                    position: .middle,
+                    size: segmentSize
+                ) {
+                    viewModel.selectFloor(id: floor.id)
+                }
+                .simultaneousGesture(
+                    LongPressGesture(minimumDuration: 0.4)
+                        .onEnded { _ in
+                            renameFloorID = floor.id
+                            renameText = floor.name
+                            isRenaming = true
+                        }
+                )
+            }
+
+            FloorPlanIconButton(symbol: "plus", label: "Add Floor Below", position: .bottom, size: segmentSize) {
+                viewModel.addFloorBelow()
+            }
         }
-        .offset(x: controlsHidden ? -panelWidth - horizontalOffset : 0)
+        .frame(width: segmentSize, height: totalHeight, alignment: .top)
+        .offset(x: controlsHidden ? -segmentSize - horizontalOffset : 0)
         .opacity(controlsHidden ? 0 : 1)
         .allowsHitTesting(!controlsHidden)
         .alert("Rename Floor", isPresented: $isRenaming) {
@@ -72,7 +64,20 @@ struct FloorPlanFloorSelectorView: View {
         }
     }
 
+    private var totalHeight: CGFloat {
+        segmentSize * CGFloat(viewModel.floors.count + 2)
+    }
+
     private var horizontalOffset: CGFloat {
-        panelWidth * 0.6
+        segmentSize * 1.2
+    }
+
+    private func displayLabel(for name: String) -> String {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let prefix = trimmed.prefix(2).uppercased()
+        if prefix.isEmpty {
+            return "--"
+        }
+        return prefix
     }
 }

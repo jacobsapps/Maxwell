@@ -10,15 +10,21 @@ import SwiftUI
 struct FloorPlanFloorButton: View {
     let title: String
     let isSelected: Bool
+    let position: FloorPlanSegmentPosition
+    let size: CGFloat
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        FloorPlanGlassSegmentButton(
+            position: position,
+            size: CGSize(width: size, height: size),
+            isSelected: isSelected,
+            action: action
+        ) {
             Text(title)
-                .frame(maxWidth: .infinity)
+                .font(.caption)
+                .bold()
+                .minimumScaleFactor(0.8)
         }
-        .padding(BulbSpacing.xs)
-        .background(isSelected ? Color.bulbGlow : .clear, in: .rect(cornerRadius: BulbMetrics.smallCornerRadius))
-        .floorPlanGlassButtonStyle()
     }
 }
