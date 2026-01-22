@@ -39,6 +39,7 @@ Run + UI verification (simulator):
 - Get the app path: `get_sim_app_path` (platform `iOS Simulator`), then `get_app_bundle_id`.
 - Boot + install + launch: `boot_sim`, `install_app_sim`, then `launch_app_sim`.
 - Verify UI elements via `describe_ui` and confirm expected `AXLabel` values (text or button labels).
+- For screenshots, use the XcodeBuildMCP `screenshot` tool instead of `simctl`.
 
 # Agent Instructions
 
@@ -165,3 +166,4 @@ If SwiftData is configured to use CloudKit:
 ## PR instructions
 
 - If installed, make sure SwiftLint returns no warnings or errors before committing.
+- For PRs that include UI changes, include a screenshot in the PR description demonstrating the change. Keep screenshots framed and constrained to roughly 400×800 points (or smaller) so they are not overly large.
