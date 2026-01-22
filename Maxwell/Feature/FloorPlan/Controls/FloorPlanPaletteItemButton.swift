@@ -20,7 +20,7 @@ struct FloorPlanPaletteItemButton: View {
                 .labelStyle(FloorPlanVerticalLabelStyle())
         }
         .gesture(
-            DragGesture(minimumDistance: 0, coordinateSpace: .named("FloorPlanCanvas"))
+            DragGesture(minimumDistance: 0, coordinateSpace: .named(FloorPlanCanvasCoordinateSpace.name))
                 .onChanged { value in
                     onDragChanged(item, value.location)
                 }

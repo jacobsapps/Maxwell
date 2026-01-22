@@ -12,29 +12,34 @@ struct FloorPlanBuilderView: View {
 
     @State private var placementState: FloorPlanPlacementState?
     @State private var canvasTransform = FloorPlanCanvasTransform()
-    @State private var canvasMetrics = FloorPlanCanvasMetrics.zero
     @State private var isPaletteDragActive = false
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                FloorPlanCanvasView(
-                    viewModel: viewModel,
-                    placementState: $placementState,
-                    canvasTransform: $canvasTransform
+            GeometryReader { proxy in
+                let canvasMetrics = FloorPlanCanvasMetrics(
+                    center: CGPoint(x: proxy.size.width / 2, y: proxy.size.height / 2),
+                    size: proxy.size
                 )
-                .ignoresSafeArea()
-                .onPreferenceChange(FloorPlanCanvasMetricsKey.self) { metrics in
-                    canvasMetrics = metrics
-                }
 
-                FloorPlanControlsOverlayView(
-                    viewModel: viewModel,
-                    placementState: $placementState,
-                    canvasTransform: $canvasTransform,
-                    isPaletteDragActive: $isPaletteDragActive,
-                    canvasMetrics: canvasMetrics
-                )
+                ZStack {
+                    FloorPlanCanvasView(
+                        viewModel: viewModel,
+                        placementState: $placementState,
+                        canvasTransform: $canvasTransform,
+                        canvasMetrics: canvasMetrics
+                    )
+
+                    FloorPlanControlsOverlayView(
+                        viewModel: viewModel,
+                        placementState: $placementState,
+                        canvasTransform: $canvasTransform,
+                        isPaletteDragActive: $isPaletteDragActive,
+                        canvasMetrics: canvasMetrics
+                    )
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .coordinateSpace(name: FloorPlanCanvasCoordinateSpace.name)
             }
             .navigationTitle("Floor Plan")
         }
