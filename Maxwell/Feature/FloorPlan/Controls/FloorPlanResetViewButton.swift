@@ -13,10 +13,11 @@ struct FloorPlanResetViewButton: View {
     let onReset: () -> Void
 
     @ScaledMetric(relativeTo: .body) private var panelWidth: CGFloat = 140
+    @ScaledMetric(relativeTo: .body) private var segmentSize: CGFloat = 34
 
     var body: some View {
         FloorPlanGlassPanel(cornerRadius: BulbMetrics.cornerRadius) {
-            FloorPlanIconButton(symbol: "arrow.counterclockwise", label: "Reset View") {
+            FloorPlanIconButton(symbol: "arrow.counterclockwise", label: "Reset View", position: .single, size: segmentSize) {
                 onReset()
             }
             .disabled(!isEnabled)
