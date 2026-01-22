@@ -47,7 +47,7 @@ struct BulbSecondaryButtonStyle: ButtonStyle {
 struct BulbGhostButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.headline)
+            .font(.subheadline)
             .foregroundStyle(Color.bulbInk)
             .padding(.vertical, BulbSpacing.xs)
             .padding(.horizontal, BulbSpacing.md)

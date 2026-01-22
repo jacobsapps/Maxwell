@@ -9,11 +9,7 @@ import SwiftUI
 
 struct FloorPlanGlassButtonStyleModifier: ViewModifier {
     func body(content: Content) -> some View {
-        if #available(iOS 26, *) {
-            content.buttonStyle(.glass)
-        } else {
-            content.buttonStyle(.bordered)
-        }
+        content.buttonStyle(BulbGhostButtonStyle())
     }
 }
 

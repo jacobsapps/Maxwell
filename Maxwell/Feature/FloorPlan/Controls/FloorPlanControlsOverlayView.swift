@@ -11,8 +11,8 @@ struct FloorPlanControlsOverlayView: View {
     @Bindable var viewModel: FloorPlanBuilderViewModel
     @Binding var placementState: FloorPlanPlacementState?
 
-    @ScaledMetric(relativeTo: .body) private var horizontalPadding: CGFloat = 20
-    @ScaledMetric(relativeTo: .body) private var glassSpacing: CGFloat = 24
+    @ScaledMetric(relativeTo: .body) private var horizontalPadding: CGFloat = BulbSpacing.lg
+    @ScaledMetric(relativeTo: .body) private var glassSpacing: CGFloat = BulbSpacing.xl
 
     var body: some View {
         let controlsHidden = placementState != nil
