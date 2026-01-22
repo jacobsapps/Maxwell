@@ -46,6 +46,8 @@ struct BulbGuideColorTemperatureView: View {
         )
     ]
 
+    @State private var selectedSwatch: BulbTemperatureSwatch?
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: BulbSpacing.lg) {
@@ -62,7 +64,13 @@ struct BulbGuideColorTemperatureView: View {
                     VStack(alignment: .leading, spacing: BulbSpacing.sm) {
                         BulbSectionHeader("Kelvin swatches")
                         ForEach(swatches) { swatch in
-                            BulbGuideTemperatureRowView(swatch: swatch)
+                            Button {
+                                selectedSwatch = swatch
+                            } label: {
+                                BulbGuideTemperatureRowView(swatch: swatch)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(Text("\(swatch.kelvin) Kelvin swatch"))
                         }
                     }
                 }
@@ -80,5 +88,8 @@ struct BulbGuideColorTemperatureView: View {
         }
         .background(Color.bulbCanvas)
         .navigationTitle("Color Temperature")
+        .fullScreenCover(item: $selectedSwatch) { swatch in
+            BulbGuideTemperatureSwatchFullScreenView(swatch: swatch)
+        }
     }
 }
