@@ -6,6 +6,8 @@ user: Confirmed plan, asked to proceed, and requested a PR when finished.
 assistant: Implemented compact glass segment controls and updated default floor naming.
 user: Asked to use XcodeBuildMCP, update AGENTS, and remove xcodebuild permissions entry.
 assistant: Updated docs/settings, fixed build errors, and verified via XcodeBuildMCP.
+user: Reported controls still wrong; requested simpler styling and readable labels, then asked for PR.
+assistant: Simplified control styling, resized palette, and reverified via XcodeBuildMCP.
 
 # Initial User Prompt
 hi. There are some touch controls on the floor plan feature in this app. Right now they look very clunky. I want them to look slick and nice.
