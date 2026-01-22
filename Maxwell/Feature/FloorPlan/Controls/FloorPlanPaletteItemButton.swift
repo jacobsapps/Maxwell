@@ -14,6 +14,6 @@ struct FloorPlanPaletteItemButton: View {
     var body: some View {
         Button(item.title, systemImage: item.systemImage, action: action)
             .frame(maxWidth: .infinity)
-            .floorPlanGlassButtonStyle()
+            .buttonStyle(BulbSecondaryButtonStyle())
     }
 }

@@ -17,11 +17,25 @@ struct FloorPlanGlassPanel<Content: View>: View {
         if #available(iOS 26, *) {
             content
                 .padding(paddingSize)
+                .background(Color.bulbSurface, in: .rect(cornerRadius: cornerRadius))
+                .background(BulbGradients.glassSheen, in: .rect(cornerRadius: cornerRadius))
                 .glassEffect(.regular.interactive(), in: .rect(cornerRadius: cornerRadius))
+                .overlay(
+                    RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                        .stroke(Color.bulbEdge.opacity(0.6), lineWidth: BulbMetrics.borderWidth)
+                )
+                .clipShape(.rect(cornerRadius: cornerRadius))
         } else {
             content
                 .padding(paddingSize)
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: cornerRadius))
+                .background(Color.bulbSurface, in: .rect(cornerRadius: cornerRadius))
+                .background(BulbGradients.glassSheen, in: .rect(cornerRadius: cornerRadius))
+                .background(.ultraThinMaterial, in: .rect(cornerRadius: cornerRadius))
+                .overlay(
+                    RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                        .stroke(Color.bulbEdge.opacity(0.6), lineWidth: BulbMetrics.borderWidth)
+                )
+                .clipShape(.rect(cornerRadius: cornerRadius))
         }
     }
 }

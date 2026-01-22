@@ -12,10 +12,10 @@ struct FloorPlanPaletteView: View {
     let onSelect: (FloorPlanPaletteItem) -> Void
 
     @ScaledMetric(relativeTo: .body) private var panelWidth: CGFloat = 120
-    @ScaledMetric(relativeTo: .body) private var itemSpacing: CGFloat = 12
+    @ScaledMetric(relativeTo: .body) private var itemSpacing: CGFloat = BulbSpacing.md
 
     var body: some View {
-        FloorPlanGlassPanel(cornerRadius: 20) {
+        FloorPlanGlassPanel(cornerRadius: BulbMetrics.cornerRadius) {
             VStack(spacing: itemSpacing) {
                 ForEach(FloorPlanPaletteItem.allCases) { item in
                     FloorPlanPaletteItemButton(item: item) {

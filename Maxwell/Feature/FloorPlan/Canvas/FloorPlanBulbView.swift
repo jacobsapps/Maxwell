@@ -27,12 +27,13 @@ struct FloorPlanBulbView: View {
         )
 
         Circle()
-            .fill(.yellow)
+            .fill(Color.bulbWarm)
             .frame(width: bulbSize, height: bulbSize)
             .overlay {
                 Circle()
-                    .strokeBorder(Color.orange.opacity(0.6), lineWidth: 2)
+                    .strokeBorder(Color.bulbEdge.opacity(0.7), lineWidth: 2)
             }
+            .shadow(color: Color.bulbGlow, radius: BulbMetrics.glowRadius / 2, x: 0, y: 4)
             .position(x: center.x + proposedPosition.x, y: center.y + proposedPosition.y)
             .gesture(bulbDragGesture())
             .accessibilityLabel(Text("Bulb"))
