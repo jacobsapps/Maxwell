@@ -295,6 +295,29 @@ final class FloorPlanBuilderViewModel {
             floorPlan = try store.createFloorPlan(name: "Home")
         }
         var floors = try store.fetchFloors(floorPlanId: floorPlan.id)
+        #if DEBUG
+        if MaxwellDataStore.shouldSeedSummary {
+            if floors.isEmpty {
+                try store.seedSummary(floorPlanId: floorPlan.id)
+                floors = try store.fetchFloors(floorPlanId: floorPlan.id)
+            } else {
+                var hasRooms = false
+                for floor in floors where hasRooms == false {
+                    let rooms = try store.fetchRooms(floorId: floor.id)
+                    if rooms.isEmpty == false {
+                        hasRooms = true
+                    }
+                }
+                if hasRooms == false {
+                    for floor in floors {
+                        try store.deleteFloor(id: floor.id)
+                    }
+                    try store.seedSummary(floorPlanId: floorPlan.id)
+                    floors = try store.fetchFloors(floorPlanId: floorPlan.id)
+                }
+            }
+        }
+        #endif
         if floors.isEmpty {
             floors = [try store.createFloor(floorPlanId: floorPlan.id, name: "Floor 1", orderIndex: 0)]
         }
