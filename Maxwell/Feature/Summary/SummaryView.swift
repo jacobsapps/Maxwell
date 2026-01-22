@@ -13,42 +13,40 @@ struct SummaryView: View {
     var body: some View {
         let summary = SummaryViewModel(floors: viewModel.floors)
         NavigationStack {
-            if summary.floors.isEmpty {
-                ContentUnavailableView(
-                    "No floors yet",
-                    systemImage: "square.grid.3x3",
-                    description: Text("Add a floor to start building your plan.")
-                )
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.bulbCanvas)
-                .navigationTitle("Summary")
-            } else {
-                List {
-                    ForEach(summary.floors) { floor in
-                        Section {
-                            if floor.rooms.isEmpty {
-                                Text("No rooms yet")
-                                    .foregroundStyle(.secondary)
-                            } else {
-                                ForEach(floor.rooms.enumerated(), id: \.element.id) { index, room in
-                                    let bulbs = summary.bulbs(for: room, in: floor)
-                                    SummaryRoomRowView(
-                                        roomTitle: summary.roomTitle(for: index),
-                                        bulbs: bulbs,
-                                        bulbTitle: summary.bulbTitle
-                                    )
-                                }
+            List {
+                ForEach(summary.floors) { floor in
+                    Section {
+                        if floor.rooms.isEmpty {
+                            Text("No rooms yet")
+                                .foregroundStyle(.secondary)
+                        } else {
+                            ForEach(floor.rooms.enumerated(), id: \.element.id) { index, room in
+                                let bulbs = summary.bulbs(for: room, in: floor)
+                                SummaryRoomRowView(
+                                    roomTitle: summary.roomTitle(for: index),
+                                    bulbs: bulbs,
+                                    bulbTitle: summary.bulbTitle
+                                )
                             }
-                        } header: {
-                            BulbSectionHeader(floor.name, subtitle: summary.floorSubtitle(for: floor))
                         }
+                    } header: {
+                        BulbSectionHeader(floor.name, subtitle: summary.floorSubtitle(for: floor))
                     }
                 }
-                .listStyle(.insetGrouped)
-                .scrollContentBackground(.hidden)
-                .background(Color.bulbCanvas)
-                .navigationTitle("Summary")
             }
+            .listStyle(.insetGrouped)
+            .scrollContentBackground(.hidden)
+            .background(Color.bulbCanvas)
+            .overlay {
+                if summary.floors.isEmpty {
+                    ContentUnavailableView(
+                        "No floors yet",
+                        systemImage: "square.grid.3x3",
+                        description: Text("Add a floor to start building your plan.")
+                    )
+                }
+            }
+            .navigationTitle("Summary")
         }
     }
 }
