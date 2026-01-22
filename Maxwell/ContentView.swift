@@ -19,12 +19,6 @@ struct ContentView: View {
                     .accessibilityIdentifier("tab.floorPlan")
             }
             Tab {
-                InteractiveFloorPlanView(viewModel: appModel.floorPlanBuilder)
-            } label: {
-                Label("Interactive", systemImage: "hand.draw")
-                    .accessibilityIdentifier("tab.interactive")
-            }
-            Tab {
                 SummaryView(viewModel: appModel.floorPlanBuilder)
             } label: {
                 Label("Summary", systemImage: "list.bullet.rectangle")

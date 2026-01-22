@@ -5,6 +5,9 @@ Assistant: Confirmed approach, asked about tab naming and verification scope.
 User: Requested name "Bulb Guide" and confirmed it is a third tab.
 Assistant: Asked for verification steps before coding.
 User: Confirmed build and unit tests.
+User: Requested removing Interactive tab so tabs are Floor Plan, Summary, Bulb Guide.
+Assistant: Proposed plan with simulator verification and asked for confirmation.
+User: Approved and asked to update PR quickly.
 
 Initial user prompt:
 you are in charge of building the third and final tab in this app: The Bulb Data section.
@@ -18,9 +21,11 @@ Purpose / Decisions Summary:
 - Use the design system components and CCT swatches for a cohesive list-based UI.
 - Add fittings imagery from context assets for the fittings section.
 - Verification includes build and unit tests.
+- Remove the Interactive tab so the main tabs are Floor Plan, Summary, and Bulb Guide.
 
 Session Plan Summary:
 - Review light-bulb research and fittings assets to define the data categories.
 - Implement Bulb Data tab UI and detail screens using design system components.
 - Wire in fittings imagery and update the tab bar entry.
 - Verify by building and compiling the app in the simulator and running unit tests.
+- Remove the Interactive tab and verify the tab bar order in the simulator.
