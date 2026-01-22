@@ -21,6 +21,7 @@ struct FloorPlanBuilderView: View {
                     placementState: $placementState,
                     canvasTransform: $canvasTransform
                 )
+                .ignoresSafeArea()
 
                 FloorPlanControlsOverlayView(
                     viewModel: viewModel,
