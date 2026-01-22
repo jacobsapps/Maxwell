@@ -30,6 +30,12 @@ struct ContentView: View {
                 Label("Summary", systemImage: "list.bullet.rectangle")
                     .accessibilityIdentifier("tab.summary")
             }
+            Tab {
+                BulbGuideView()
+            } label: {
+                Label("Bulb Guide", systemImage: "lightbulb")
+                    .accessibilityIdentifier("tab.guide")
+            }
         }
     }
 }
