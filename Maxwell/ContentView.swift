@@ -12,14 +12,26 @@ struct ContentView: View {
 
     var body: some View {
         TabView {
-            Tab("Floor Plan", systemImage: "square.grid.3x3") {
+            Tab {
                 FloorPlanBuilderView(viewModel: appModel.floorPlanBuilder)
+            } label: {
+                Label("Floor Plan", systemImage: "square.grid.3x3")
+                    .accessibilityLabel("Floor Plan Tab")
+                    .accessibilityIdentifier("tab.floorPlan")
             }
-            Tab("Interactive", systemImage: "hand.draw") {
+            Tab {
                 InteractiveFloorPlanView(viewModel: appModel.floorPlanBuilder)
+            } label: {
+                Label("Interactive", systemImage: "hand.draw")
+                    .accessibilityLabel("Interactive Tab")
+                    .accessibilityIdentifier("tab.interactive")
             }
-            Tab("Summary", systemImage: "list.bullet.rectangle") {
+            Tab {
                 SummaryView(viewModel: appModel.floorPlanBuilder)
+            } label: {
+                Label("Summary", systemImage: "list.bullet.rectangle")
+                    .accessibilityLabel("Summary Tab")
+                    .accessibilityIdentifier("tab.summary")
             }
         }
     }

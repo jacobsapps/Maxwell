@@ -41,6 +41,9 @@ Run + UI verification (simulator):
 
 # Agent Instructions
 
+## Accessibility for UI verification
+- When you need to verify UI behavior or navigate UI in tests/automation, proactively add accessibility labels and identifiers to the relevant views (especially tab items, buttons, and list rows) so automation can target them reliably.
+
 ## Skills (use when relevant)
 - `.codex/skills/xcodebuildmcp-verification` for build/test/run verification via XcodeBuildMCP.
 - `.codex/skills/pr-workflow` for commit/push/PR updates and change summaries.
