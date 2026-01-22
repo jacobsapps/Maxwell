@@ -11,16 +11,15 @@ struct FloorPlanBulbView: View {
     let bulb: FloorPlanBulb
     let center: CGPoint
     let transformScale: CGFloat
+    let transformRotation: Angle
+    @Binding var isContentDragActive: Bool
     @Bindable var viewModel: FloorPlanBuilderViewModel
 
     @GestureState private var dragTranslation: CGSize = .zero
     @ScaledMetric(relativeTo: .body) private var bulbSize: CGFloat = 18
 
     var body: some View {
-        let adjustedTranslation = CGSize(
-            width: dragTranslation.width / transformScale,
-            height: dragTranslation.height / transformScale
-        )
+        let adjustedTranslation = adjustedTranslation(for: dragTranslation)
         let proposedPosition = CGPoint(
             x: bulb.position.x + adjustedTranslation.width,
             y: bulb.position.y + adjustedTranslation.height
@@ -37,18 +36,20 @@ struct FloorPlanBulbView: View {
             .position(x: center.x + proposedPosition.x, y: center.y + proposedPosition.y)
             .gesture(bulbDragGesture())
             .accessibilityLabel(Text("Bulb"))
+            .accessibilityIdentifier("FloorPlanBulb")
     }
 
     private func bulbDragGesture() -> some Gesture {
         DragGesture()
+            .onChanged { _ in
+                isContentDragActive = true
+            }
             .updating($dragTranslation) { value, state, _ in
                 state = value.translation
             }
             .onEnded { value in
-                let adjustedTranslation = CGSize(
-                    width: value.translation.width / transformScale,
-                    height: value.translation.height / transformScale
-                )
+                isContentDragActive = false
+                let adjustedTranslation = adjustedTranslation(for: value.translation)
                 let proposedPosition = CGPoint(
                     x: bulb.position.x + adjustedTranslation.width,
                     y: bulb.position.y + adjustedTranslation.height
@@ -56,5 +57,14 @@ struct FloorPlanBulbView: View {
                 guard let room = viewModel.roomContaining(point: proposedPosition) else { return }
                 viewModel.moveBulb(id: bulb.id, position: proposedPosition, roomID: room.id)
             }
+    }
+
+    private func adjustedTranslation(for translation: CGSize) -> CGSize {
+        let scaled = CGPoint(
+            x: translation.width / transformScale,
+            y: translation.height / transformScale
+        )
+        let rotated = scaled.rotated(by: -transformRotation.radians)
+        return CGSize(width: rotated.x, height: rotated.y)
     }
 }

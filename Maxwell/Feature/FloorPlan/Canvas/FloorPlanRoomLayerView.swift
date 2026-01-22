@@ -14,6 +14,8 @@ struct FloorPlanRoomLayerView: View {
     let transformScale: CGFloat
     let transformRotation: Angle
     let transformOffset: CGSize
+    let isPlacementActive: Bool
+    @Binding var isContentDragActive: Bool
     @Bindable var viewModel: FloorPlanBuilderViewModel
 
     var body: some View {
@@ -23,6 +25,8 @@ struct FloorPlanRoomLayerView: View {
                     room: room,
                     center: center,
                     transformScale: transformScale,
+                    transformRotation: transformRotation,
+                    isContentDragActive: $isContentDragActive,
                     viewModel: viewModel
                 )
             }
@@ -32,6 +36,8 @@ struct FloorPlanRoomLayerView: View {
                     bulb: bulb,
                     center: center,
                     transformScale: transformScale,
+                    transformRotation: transformRotation,
+                    isContentDragActive: $isContentDragActive,
                     viewModel: viewModel
                 )
             }
@@ -40,5 +46,6 @@ struct FloorPlanRoomLayerView: View {
         .scaleEffect(transformScale)
         .rotationEffect(transformRotation)
         .offset(transformOffset)
+        .allowsHitTesting(!isPlacementActive)
     }
 }
