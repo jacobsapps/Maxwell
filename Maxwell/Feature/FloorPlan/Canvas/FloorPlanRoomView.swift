@@ -16,6 +16,7 @@ struct FloorPlanRoomView: View {
     @Bindable var viewModel: FloorPlanBuilderViewModel
 
     @GestureState private var dragTranslation: CGSize = .zero
+    @GestureState private var rotationDelta: Angle = .zero
 
     var body: some View {
         let adjustedTranslation = adjustedTranslation(for: dragTranslation)
@@ -23,23 +24,16 @@ struct FloorPlanRoomView: View {
             x: room.center.x + adjustedTranslation.width,
             y: room.center.y + adjustedTranslation.height
         )
-        let candidate = FloorPlanRoom(
-            id: room.id,
-            center: proposedCenter,
-            size: room.size,
-            rotation: room.rotation
-        )
-        let isOverlapping = viewModel.overlaps(candidate: candidate, excluding: room.id)
-
-        FloorPlanRoomShapeView(room: room, isOverlapping: isOverlapping)
-            .rotationEffect(room.rotation)
+        FloorPlanRoomShapeView(room: room, isOverlapping: false)
+            .rotationEffect(room.rotation + rotationDelta)
             .position(x: center.x + proposedCenter.x, y: center.y + proposedCenter.y)
-            .gesture(roomDragGesture(isOverlapping: isOverlapping))
+            .gesture(roomDragGesture())
+            .simultaneousGesture(roomRotationGesture())
             .accessibilityLabel(Text("Room"))
             .accessibilityIdentifier("FloorPlanRoom")
     }
 
-    private func roomDragGesture(isOverlapping: Bool) -> some Gesture {
+    private func roomDragGesture() -> some Gesture {
         DragGesture()
             .onChanged { _ in
                 isContentDragActive = true
@@ -54,16 +48,21 @@ struct FloorPlanRoomView: View {
                     x: room.center.x + adjustedTranslation.width,
                     y: room.center.y + adjustedTranslation.height
                 )
-                let candidate = FloorPlanRoom(
-                    id: room.id,
-                    center: proposedCenter,
-                    size: room.size,
-                    rotation: room.rotation
-                )
-                guard viewModel.overlaps(candidate: candidate, excluding: room.id) == false else {
-                    return
-                }
                 viewModel.moveRoom(id: room.id, center: proposedCenter)
+            }
+    }
+
+    private func roomRotationGesture() -> some Gesture {
+        RotationGesture()
+            .onChanged { _ in
+                isContentDragActive = true
+            }
+            .updating($rotationDelta) { value, state, _ in
+                state = value
+            }
+            .onEnded { value in
+                isContentDragActive = false
+                viewModel.updateRoom(id: room.id, size: room.size, rotation: room.rotation + value)
             }
     }
 

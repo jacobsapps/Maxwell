@@ -9,7 +9,8 @@ import SwiftUI
 
 struct FloorPlanPaletteView: View {
     let controlsHidden: Bool
-    let onSelect: (FloorPlanPaletteItem) -> Void
+    let onDragChanged: (FloorPlanPaletteItem, CGPoint) -> Void
+    let onDragEnded: (FloorPlanPaletteItem, CGPoint) -> Void
 
     @ScaledMetric(relativeTo: .body) private var panelWidth: CGFloat = 60
     @ScaledMetric(relativeTo: .body) private var itemHeight: CGFloat = 70
@@ -22,10 +23,10 @@ struct FloorPlanPaletteView: View {
                 FloorPlanPaletteItemButton(
                     item: item,
                     position: segmentPosition(for: index, count: items.count),
-                    size: CGSize(width: panelWidth, height: itemHeight)
-                ) {
-                    onSelect(item)
-                }
+                    size: CGSize(width: panelWidth, height: itemHeight),
+                    onDragChanged: onDragChanged,
+                    onDragEnded: onDragEnded
+                )
             }
         }
         .frame(width: panelWidth, height: totalHeight(for: items.count), alignment: .top)

@@ -12,6 +12,8 @@ struct FloorPlanBuilderView: View {
 
     @State private var placementState: FloorPlanPlacementState?
     @State private var canvasTransform = FloorPlanCanvasTransform()
+    @State private var canvasMetrics = FloorPlanCanvasMetrics.zero
+    @State private var isPaletteDragActive = false
 
     var body: some View {
         NavigationStack {
@@ -22,11 +24,16 @@ struct FloorPlanBuilderView: View {
                     canvasTransform: $canvasTransform
                 )
                 .ignoresSafeArea()
+                .onPreferenceChange(FloorPlanCanvasMetricsKey.self) { metrics in
+                    canvasMetrics = metrics
+                }
 
                 FloorPlanControlsOverlayView(
                     viewModel: viewModel,
                     placementState: $placementState,
-                    canvasTransform: $canvasTransform
+                    canvasTransform: $canvasTransform,
+                    isPaletteDragActive: $isPaletteDragActive,
+                    canvasMetrics: canvasMetrics
                 )
             }
             .navigationTitle("Floor Plan")

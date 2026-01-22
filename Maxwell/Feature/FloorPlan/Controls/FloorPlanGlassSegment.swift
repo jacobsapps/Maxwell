@@ -39,6 +39,39 @@ struct FloorPlanGlassSegmentButton<Label: View>: View {
     }
 }
 
+struct FloorPlanGlassSegment<Content: View>: View {
+    let position: FloorPlanSegmentPosition
+    let size: CGSize
+    let isSelected: Bool
+    @ViewBuilder let content: () -> Content
+
+    @ScaledMetric(relativeTo: .body) private var cornerRadius: CGFloat = BulbMetrics.smallCornerRadius
+
+    var body: some View {
+        let radii = FloorPlanSegmentCornerRadii.forPosition(position, radius: cornerRadius)
+        let shape = UnevenRoundedRectangle(
+            topLeadingRadius: radii.topLeading,
+            bottomLeadingRadius: radii.bottomLeading,
+            bottomTrailingRadius: radii.bottomTrailing,
+            topTrailingRadius: radii.topTrailing,
+            style: .continuous
+        )
+
+        content()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .foregroundStyle(Color.bulbInk)
+            .contentShape(shape)
+            .background(
+                FloorPlanGlassSegmentBackground(
+                    position: position,
+                    cornerRadius: cornerRadius,
+                    isSelected: isSelected
+                )
+            )
+            .frame(width: size.width, height: size.height)
+    }
+}
+
 private struct FloorPlanSegmentCornerRadii {
     let topLeading: CGFloat
     let topTrailing: CGFloat
