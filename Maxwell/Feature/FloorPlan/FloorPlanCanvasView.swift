@@ -57,6 +57,12 @@ struct FloorPlanCanvasView: View {
                 }
             }
             .coordinateSpace(name: "FloorPlanCanvas")
+            .background(
+                Color.clear.preference(
+                    key: FloorPlanCanvasMetricsKey.self,
+                    value: FloorPlanCanvasMetrics(center: center, size: proxy.size)
+                )
+            )
             .contentShape(.rect)
             .accessibilityIdentifier("FloorPlanCanvas")
             .onChange(of: placementState) { _, newValue in
@@ -68,14 +74,6 @@ struct FloorPlanCanvasView: View {
             .simultaneousGesture(panGesture())
             .simultaneousGesture(zoomGesture())
             .simultaneousGesture(rotationGesture())
-            .simultaneousGesture(
-                placementGesture(
-                    center: center,
-                    transformScale: transformScale,
-                    transformRotation: transformRotation,
-                    transformOffset: transformOffset
-                )
-            )
         }
     }
 
@@ -103,7 +101,6 @@ struct FloorPlanCanvasView: View {
                 }
                 if let baseSize = placementBaseSize {
                     placement.size = CGSize(width: baseSize.width * value, height: baseSize.height * value)
-                    updatePlacementOverlap(&placement)
                     placementState = placement
                 }
             }
@@ -134,7 +131,6 @@ struct FloorPlanCanvasView: View {
                 }
                 if let baseRotation = placementBaseRotation {
                     placement.rotation = baseRotation + value
-                    updatePlacementOverlap(&placement)
                     placementState = placement
                 }
             }
@@ -156,78 +152,19 @@ struct FloorPlanCanvasView: View {
             }
     }
 
-    private func placementGesture(
-        center: CGPoint,
-        transformScale: CGFloat,
-        transformRotation: Angle,
-        transformOffset: CGSize
-    ) -> some Gesture {
-        DragGesture(minimumDistance: 0)
-            .onChanged { value in
-                guard var placement = placementState else { return }
-                let location = canvasPoint(
-                    from: value.location,
-                    center: center,
-                    transformScale: transformScale,
-                    transformRotation: transformRotation,
-                    transformOffset: transformOffset
-                )
-                placement.location = location
-                updatePlacementOverlap(&placement)
-                placementState = placement
-            }
-            .onEnded { value in
-                guard var placement = placementState else { return }
-                let location = canvasPoint(
-                    from: value.location,
-                    center: center,
-                    transformScale: transformScale,
-                    transformRotation: transformRotation,
-                    transformOffset: transformOffset
-                )
-                placement.location = location
-                commitPlacement(placement)
-            }
-    }
+}
 
-    private func canvasPoint(
-        from viewPoint: CGPoint,
-        center: CGPoint,
-        transformScale: CGFloat,
-        transformRotation: Angle,
-        transformOffset: CGSize
-    ) -> CGPoint {
-        let translatedX = viewPoint.x - center.x - transformOffset.width
-        let translatedY = viewPoint.y - center.y - transformOffset.height
-        let translated = CGPoint(x: translatedX, y: translatedY)
-        let rotated = translated.rotated(by: -transformRotation.radians)
-        return CGPoint(x: rotated.x / transformScale, y: rotated.y / transformScale)
-    }
+struct FloorPlanCanvasMetrics: Equatable {
+    let center: CGPoint
+    let size: CGSize
 
-    private func commitPlacement(_ placement: FloorPlanPlacementState) {
-        defer {
-            placementState = nil
-            placementBaseSize = nil
-            placementBaseRotation = nil
-        }
-        guard let location = placement.location else { return }
-        switch placement.item {
-        case .room:
-            let candidate = FloorPlanRoom(center: location, size: placement.size, rotation: placement.rotation)
-            guard viewModel.overlaps(candidate: candidate) == false else {
-                return
-            }
-            viewModel.addRoom(center: location, size: placement.size, rotation: placement.rotation)
-        case .bulb:
-            guard let room = viewModel.roomContaining(point: location) else { return }
-            viewModel.addBulb(at: location, roomID: room.id)
-        }
-    }
+    static let zero = FloorPlanCanvasMetrics(center: .zero, size: .zero)
+}
 
-    private func updatePlacementOverlap(_ placement: inout FloorPlanPlacementState) {
-        guard placement.item == .room else { return }
-        guard let location = placement.location else { return }
-        let candidate = FloorPlanRoom(center: location, size: placement.size, rotation: placement.rotation)
-        placement.isOverlapping = viewModel.overlaps(candidate: candidate)
+struct FloorPlanCanvasMetricsKey: PreferenceKey {
+    static var defaultValue: FloorPlanCanvasMetrics = .zero
+
+    static func reduce(value: inout FloorPlanCanvasMetrics, nextValue: () -> FloorPlanCanvasMetrics) {
+        value = nextValue()
     }
 }
