@@ -13,6 +13,10 @@ Assistant: Proceeding with XcodeBuildMCP screenshot and AGENTS.md update.
 User: Asked to add PR screenshot guidance to AGENTS and make a PR.
 Assistant: Added PR screenshot guidance and preparing a PR with the screenshot.
 Assistant: Opened PR with seeded Summary data and screenshot.
+User: Reported PR screenshot not rendering due to relative path.
+Assistant: Switched PR screenshot to raw GitHub URL and will document guidance.
+User: Asked to update AGENTS and PR again.
+Assistant: Added raw URL guidance to AGENTS and updating PR.
 
 Initial user prompt:
 You are the agent in charge of the summary tab where we look at the data from the floor plan in a simpler table format. I'd like you to just understand that part of the code base and get ready for changes to be made.
@@ -24,6 +28,7 @@ Purpose / Decisions Summary:
 - Auto-select the Summary tab when the seed launch argument is present.
 - Document that XcodeBuildMCP’s screenshot tool is the preferred capture method.
 - Require framed UI screenshots in PR descriptions with size guidance.
+- Require absolute raw URLs for PR screenshots so they render correctly.
 
 Session Plan Summary:
 - Add a debug seed helper for floors/rooms/bulbs and gate it behind a launch argument.

@@ -167,3 +167,4 @@ If SwiftData is configured to use CloudKit:
 
 - If installed, make sure SwiftLint returns no warnings or errors before committing.
 - For PRs that include UI changes, include a screenshot in the PR description demonstrating the change. Keep screenshots framed and constrained to roughly 400×800 points (or smaller) so they are not overly large.
+- Use an absolute URL (e.g., raw GitHub URL) for PR screenshots; relative repo paths do not render in PR descriptions.
