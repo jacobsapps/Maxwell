@@ -42,7 +42,7 @@ Run + UI verification (simulator):
 # Agent Instructions
 
 ## Accessibility for UI verification
-- When you need to verify UI behavior or navigate UI in tests/automation, proactively add accessibility labels and identifiers to the relevant views (especially tab items, buttons, and list rows) so automation can target them reliably.
+- When you need to verify UI behavior or navigate UI in tests/automation, proactively add accessibility identifiers to the relevant views (especially tab items, buttons, and list rows) so automation can target them reliably. Prefer default labels unless you need to override VoiceOver copy.
 
 ## Skills (use when relevant)
 - `.codex/skills/xcodebuildmcp-verification` for build/test/run verification via XcodeBuildMCP.
@@ -119,6 +119,7 @@ func loadBulbStates() async throws -> [BulbState] {
 - Always use `foregroundStyle()` instead of `foregroundColor()`.
 - Always use `clipShape(.rect(cornerRadius:))` instead of `cornerRadius()`.
 - Always use the `Tab` API instead of `tabItem()`.
+- Prefer `ContentUnavailableView` (or `.contentUnavailableView`) for empty states instead of custom placeholder text.
 - Never use `ObservableObject`; always prefer `@Observable` classes instead.
 - Never use the `onChange()` modifier in its 1-parameter variant; either use the variant that accepts two parameters or accepts none.
 - Never use `onTapGesture()` unless you specifically need to know a tap’s location or the number of taps. All other usages should use `Button`.

@@ -7,6 +7,8 @@ User: Approved and asked to continue.
 Assistant: Implemented Summary list UI, added SummaryViewModel + tests, ran build/tests/simulator.
 User: Asked to make a PR, add accessibility labels/identifiers, and update agent rules.
 Assistant: Added tab accessibility identifiers/labels and updated AGENTS; will PR without verification per request.
+User: Requested identifiers only, ContentUnavailableView empty state, and SwiftUI rule update.
+Assistant: Updated Summary empty state and identifiers; rebuilt successfully.
 
 Initial user prompt:
 Hello! We have the ability to create floor plans and save them to a SQL-like data model in this app. What I'd like you to do is build out the second tab, the one with a summary, essentially showing a SwiftUI list with sections for each floor and which rooms exist and which light bulbs exist on each room. Please use standard system components and our design system in the work.
@@ -17,6 +19,7 @@ Purpose / Decisions Summary:
 - Verify with build, unit tests, and simulator launch; UI automation stayed on non-summary tabs.
  - Add accessibility labels/identifiers for tab verification and update agent rules to prefer them.
  - Skip additional verification per user request to finish quickly.
+ - Keep identifiers only, use ContentUnavailableView for empty states, and update SwiftUI guidance; build completed.
 
 Session Plan Summary:
 - Review Summary tab and data model to shape the list structure.

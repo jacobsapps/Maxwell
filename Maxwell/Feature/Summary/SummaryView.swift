@@ -13,11 +13,17 @@ struct SummaryView: View {
     var body: some View {
         let summary = SummaryViewModel(floors: viewModel.floors)
         NavigationStack {
-            List {
-                if summary.floors.isEmpty {
-                    Text("No floors yet")
-                        .foregroundStyle(.secondary)
-                } else {
+            if summary.floors.isEmpty {
+                ContentUnavailableView(
+                    "No floors yet",
+                    systemImage: "square.grid.3x3",
+                    description: Text("Add a floor to start building your plan.")
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.bulbCanvas)
+                .navigationTitle("Summary")
+            } else {
+                List {
                     ForEach(summary.floors) { floor in
                         Section {
                             if floor.rooms.isEmpty {
@@ -38,11 +44,11 @@ struct SummaryView: View {
                         }
                     }
                 }
+                .listStyle(.insetGrouped)
+                .scrollContentBackground(.hidden)
+                .background(Color.bulbCanvas)
+                .navigationTitle("Summary")
             }
-            .listStyle(.insetGrouped)
-            .scrollContentBackground(.hidden)
-            .background(Color.bulbCanvas)
-            .navigationTitle("Summary")
         }
     }
 }
