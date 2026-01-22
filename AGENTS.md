@@ -1,5 +1,6 @@
 ## Planning and verification requirements
 - At the start of a new agent session, the default first step is: pull latest `main`, then create/switch to a fresh branch before changing any files (unless the user explicitly says otherwise).
+- Once a spec or plan is created but not yet executed, add a TODOs.md bullet pointing to it until it’s completed.
 - A code change means changing code. If no code is changing, it is a non-code change.
 - Plans are documented in the prompt and the session transcript; do not duplicate them in `context/spec/`.
 - Specs in `context/spec/` are only for technical system designs or research that will be useful later (e.g., data models, design systems, service design docs).
