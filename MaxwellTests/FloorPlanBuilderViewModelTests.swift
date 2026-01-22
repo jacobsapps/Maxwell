@@ -10,9 +10,14 @@ import SwiftUI
 @testable import Maxwell
 
 struct FloorPlanBuilderViewModelTests {
+    @MainActor private func makeViewModel() throws -> FloorPlanBuilderViewModel {
+        let database = try AppDatabase.makeInMemory()
+        let store = MaxwellDataStore(dbWriter: database)
+        return FloorPlanBuilderViewModel(store: store)
+    }
 
-    @Test @MainActor func addingFloorAboveSelectsNewFloor() {
-        let viewModel = FloorPlanBuilderViewModel()
+    @Test @MainActor func addingFloorAboveSelectsNewFloor() throws {
+        let viewModel = try makeViewModel()
         let originalFloorID = viewModel.selectedFloorID
 
         viewModel.addFloorAbove()
@@ -21,8 +26,8 @@ struct FloorPlanBuilderViewModelTests {
         #expect(viewModel.selectedFloorID != originalFloorID)
     }
 
-    @Test @MainActor func renameFloorTrimsWhitespace() {
-        let viewModel = FloorPlanBuilderViewModel()
+    @Test @MainActor func renameFloorTrimsWhitespace() throws {
+        let viewModel = try makeViewModel()
         let floorID = viewModel.selectedFloorID
 
         viewModel.renameFloor(id: floorID, name: "  Kitchen  ")
@@ -30,8 +35,8 @@ struct FloorPlanBuilderViewModelTests {
         #expect(viewModel.selectedFloor.name == "Kitchen")
     }
 
-    @Test @MainActor func overlapDetectionFindsIntersectingRooms() {
-        let viewModel = FloorPlanBuilderViewModel()
+    @Test @MainActor func overlapDetectionFindsIntersectingRooms() throws {
+        let viewModel = try makeViewModel()
         viewModel.addRoom(center: CGPoint(x: 0, y: 0), size: CGSize(width: 100, height: 100), rotation: .zero)
 
         let candidate = FloorPlanRoom(center: CGPoint(x: 10, y: 10), size: CGSize(width: 80, height: 80), rotation: .zero)
