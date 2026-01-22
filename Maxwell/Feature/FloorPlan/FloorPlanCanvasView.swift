@@ -11,6 +11,7 @@ struct FloorPlanCanvasView: View {
     @Bindable var viewModel: FloorPlanBuilderViewModel
     @Binding var placementState: FloorPlanPlacementState?
     @Binding var canvasTransform: FloorPlanCanvasTransform
+    let canvasMetrics: FloorPlanCanvasMetrics
 
     @State private var isContentDragActive = false
 
@@ -22,59 +23,50 @@ struct FloorPlanCanvasView: View {
     @State private var placementBaseRotation: Angle?
 
     var body: some View {
-        GeometryReader { proxy in
-            let center = CGPoint(x: proxy.size.width / 2, y: proxy.size.height / 2)
-            let transformScale = canvasTransform.scale * zoomScale
-            let transformRotation = canvasTransform.rotation + rotationDelta
-            let transformOffset = CGSize(
-                width: canvasTransform.offset.width + panTranslation.width,
-                height: canvasTransform.offset.height + panTranslation.height
+        let center = canvasMetrics.center
+        let transformScale = canvasTransform.scale * zoomScale
+        let transformRotation = canvasTransform.rotation + rotationDelta
+        let transformOffset = CGSize(
+            width: canvasTransform.offset.width + panTranslation.width,
+            height: canvasTransform.offset.height + panTranslation.height
+        )
+
+        ZStack {
+            FloorPlanCanvasBackgroundView()
+
+            FloorPlanRoomLayerView(
+                rooms: viewModel.selectedFloor.rooms,
+                bulbs: viewModel.selectedFloor.bulbs,
+                center: center,
+                transformScale: transformScale,
+                transformRotation: transformRotation,
+                transformOffset: transformOffset,
+                isPlacementActive: placementState != nil,
+                isContentDragActive: $isContentDragActive,
+                viewModel: viewModel
             )
 
-            ZStack {
-                FloorPlanCanvasBackgroundView()
-
-                FloorPlanRoomLayerView(
-                    rooms: viewModel.selectedFloor.rooms,
-                    bulbs: viewModel.selectedFloor.bulbs,
+            if let placement = placementState {
+                FloorPlanPlacementView(
+                    placement: placement,
                     center: center,
                     transformScale: transformScale,
                     transformRotation: transformRotation,
-                    transformOffset: transformOffset,
-                    isPlacementActive: placementState != nil,
-                    isContentDragActive: $isContentDragActive,
-                    viewModel: viewModel
+                    transformOffset: transformOffset
                 )
-
-                if let placement = placementState {
-                    FloorPlanPlacementView(
-                        placement: placement,
-                        center: center,
-                        transformScale: transformScale,
-                        transformRotation: transformRotation,
-                        transformOffset: transformOffset
-                    )
-                }
             }
-            .coordinateSpace(name: "FloorPlanCanvas")
-            .background(
-                Color.clear.preference(
-                    key: FloorPlanCanvasMetricsKey.self,
-                    value: FloorPlanCanvasMetrics(center: center, size: proxy.size)
-                )
-            )
-            .contentShape(.rect)
-            .accessibilityIdentifier("FloorPlanCanvas")
-            .onChange(of: placementState) { _, newValue in
-                if newValue == nil {
-                    placementBaseSize = nil
-                    placementBaseRotation = nil
-                }
-            }
-            .simultaneousGesture(panGesture())
-            .simultaneousGesture(zoomGesture())
-            .simultaneousGesture(rotationGesture())
         }
+        .contentShape(.rect)
+        .accessibilityIdentifier("FloorPlanCanvas")
+        .onChange(of: placementState) { _, newValue in
+            if newValue == nil {
+                placementBaseSize = nil
+                placementBaseRotation = nil
+            }
+        }
+        .simultaneousGesture(panGesture())
+        .simultaneousGesture(zoomGesture())
+        .simultaneousGesture(rotationGesture())
     }
 
     private func panGesture() -> some Gesture {
@@ -152,19 +144,4 @@ struct FloorPlanCanvasView: View {
             }
     }
 
-}
-
-struct FloorPlanCanvasMetrics: Equatable {
-    let center: CGPoint
-    let size: CGSize
-
-    static let zero = FloorPlanCanvasMetrics(center: .zero, size: .zero)
-}
-
-struct FloorPlanCanvasMetricsKey: PreferenceKey {
-    static var defaultValue: FloorPlanCanvasMetrics = .zero
-
-    static func reduce(value: inout FloorPlanCanvasMetrics, nextValue: () -> FloorPlanCanvasMetrics) {
-        value = nextValue()
-    }
 }
