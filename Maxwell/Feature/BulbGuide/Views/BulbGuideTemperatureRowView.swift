@@ -46,5 +46,6 @@ struct BulbGuideTemperatureRowView: View {
             }
         }
         .padding(.vertical, BulbSpacing.xs)
+        .contentShape(.rect)
     }
 }

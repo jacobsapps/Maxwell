@@ -5,7 +5,7 @@
 - Plans are documented in the prompt and the session transcript; do not duplicate them in `context/spec/`.
 - Specs in `context/spec/` are only for technical system designs or research that will be useful later (e.g., data models, design systems, service design docs).
 - Non-code changes (docs, prompts, git status/fetch/pull/branch switch, etc.) never require a plan or a session entry.
-- For code changes, the plan (recorded in the prompt/session transcript) must include explicit verification steps (build, unit tests, or simulator run) and those steps must be agreed in advance before any coding starts. If verification is obvious (e.g., a file move or rename), proceed without asking and run a basic build/compile step.
+- For code changes, a plan is optional unless the user asks for one or the work is large/unclear; when you skip a plan, proceed directly with the requested changes and note verification steps afterward.
 - Non-code changes do not require verification steps.
 - When describing verification steps in docs or responses, use plain language (e.g., “build and compile”) rather than tool-specific phrasing like derived-data paths.
 - Before any code is committed, pushed, or the task is considered done, execute the agreed verification steps and confirm the feature works as intended.

@@ -25,18 +25,21 @@ struct ContentView: View {
                 FloorPlanBuilderView(viewModel: appModel.floorPlanBuilder)
             } label: {
                 Label("Floor Plan", systemImage: "square.grid.3x3")
+                    .accessibilityLabel(Text("Floor Plan"))
                     .accessibilityIdentifier("tab.floorPlan")
             }
             Tab(value: AppTab.summary) {
                 SummaryView(viewModel: appModel.floorPlanBuilder)
             } label: {
                 Label("Summary", systemImage: "list.bullet.rectangle")
+                    .accessibilityLabel(Text("Summary"))
                     .accessibilityIdentifier("tab.summary")
             }
             Tab(value: AppTab.guide) {
                 BulbGuideView()
             } label: {
                 Label("Bulb Guide", systemImage: "lightbulb")
+                    .accessibilityLabel(Text("Bulb Guide"))
                     .accessibilityIdentifier("tab.guide")
             }
         }
