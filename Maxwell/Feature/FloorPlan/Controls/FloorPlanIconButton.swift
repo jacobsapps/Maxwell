@@ -10,11 +10,20 @@ import SwiftUI
 struct FloorPlanIconButton: View {
     let symbol: String
     let label: String
+    let position: FloorPlanSegmentPosition
+    let size: CGFloat
     let action: () -> Void
 
     var body: some View {
-        Button(label, systemImage: symbol, action: action)
-            .frame(maxWidth: .infinity)
-            .floorPlanGlassButtonStyle()
+        FloorPlanGlassSegmentButton(
+            position: position,
+            size: CGSize(width: size, height: size),
+            isSelected: false,
+            action: action
+        ) {
+            Label(label, systemImage: symbol)
+                .labelStyle(.iconOnly)
+                .font(.callout)
+        }
     }
 }

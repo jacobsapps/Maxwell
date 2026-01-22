@@ -9,11 +9,20 @@ import SwiftUI
 
 struct FloorPlanPaletteItemButton: View {
     let item: FloorPlanPaletteItem
+    let position: FloorPlanSegmentPosition
+    let size: CGSize
     let action: () -> Void
 
     var body: some View {
-        Button(item.title, systemImage: item.systemImage, action: action)
-            .frame(maxWidth: .infinity)
-            .buttonStyle(BulbSecondaryButtonStyle())
+        FloorPlanGlassSegmentButton(
+            position: position,
+            size: size,
+            isSelected: false,
+            action: action
+        ) {
+            Label(item.title, systemImage: item.systemImage)
+                .labelStyle(.iconOnly)
+                .font(.callout)
+        }
     }
 }

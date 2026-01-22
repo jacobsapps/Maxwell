@@ -38,7 +38,7 @@ final class FloorPlanBuilderViewModel {
             self.roomShapeIDs = state.roomShapeIDs
             self.bulbPlacementIDs = state.bulbPlacementIDs
         } catch {
-            let fallbackFloor = FloorPlanFloor(name: "Floor 1")
+            let fallbackFloor = FloorPlanFloor(name: "G")
             self.floorPlanID = UUID()
             self.floors = [fallbackFloor]
             self.selectedFloorID = fallbackFloor.id
@@ -58,7 +58,7 @@ final class FloorPlanBuilderViewModel {
 
     var selectedFloor: FloorPlanFloor {
         guard let floor = floors.first(where: { $0.id == selectedFloorID }) else {
-            return floors.first ?? FloorPlanFloor(name: "Floor 1")
+            return floors.first ?? FloorPlanFloor(name: "G")
         }
         return floor
     }
@@ -237,7 +237,7 @@ final class FloorPlanBuilderViewModel {
 
     private func insertFloor(at index: Int) {
         let newIndex = max(0, min(index, floors.count))
-        let name = defaultFloorName(for: floors.count)
+        let name = defaultFloorName(for: newIndex)
         do {
             let floor = try store.createFloor(floorPlanId: floorPlanID, name: name, orderIndex: newIndex)
             let floorModel = FloorPlanFloor(id: floor.id, name: floor.name)
@@ -275,7 +275,14 @@ final class FloorPlanBuilderViewModel {
     }
 
     private func defaultFloorName(for index: Int) -> String {
-        "Floor \(index + 1)"
+        guard floors.isEmpty == false else { return "G" }
+        let groundIndex = floors.firstIndex(where: { $0.name == "G" }) ?? 0
+        if index <= groundIndex {
+            let level = (groundIndex - index) + 1
+            return "\(level)F"
+        }
+        let level = index - groundIndex
+        return "\(level)B"
     }
 
     private func defaultRoomName(for index: Int) -> String {
@@ -296,7 +303,11 @@ final class FloorPlanBuilderViewModel {
         }
         var floors = try store.fetchFloors(floorPlanId: floorPlan.id)
         if floors.isEmpty {
-            floors = [try store.createFloor(floorPlanId: floorPlan.id, name: "Floor 1", orderIndex: 0)]
+            floors = [try store.createFloor(floorPlanId: floorPlan.id, name: "G", orderIndex: 0)]
+        }
+        if floors.count == 1, floors[0].name == "Floor 1" {
+            try store.updateFloorName(id: floors[0].id, name: "G")
+            floors[0].name = "G"
         }
 
         var floorModels: [FloorPlanFloor] = []

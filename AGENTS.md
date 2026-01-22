@@ -15,6 +15,7 @@
 
 ## Verification via XcodeBuildMCP
 This repo ships an MCP config at `mcp.json` that defines the XcodeBuildMCP server (runs `npx -y xcodebuildmcp@latest`). To turn it on, make sure your MCP host loads this file and starts the server; then verify it is live by calling a lightweight tool like `list_schemes` or `doctor`.
+If a sandboxed `xcodebuild` requires escalated permissions, skip it and use XcodeBuildMCP instead.
 
 Quick, repeatable verification sequence (use the same derived data path for speed):
 1) `session-set-defaults` with `projectPath`, `scheme`, `simulatorId`, `useLatestOS`.
