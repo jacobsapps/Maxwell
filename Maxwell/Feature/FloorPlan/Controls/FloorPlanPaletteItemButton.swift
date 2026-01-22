@@ -15,11 +15,7 @@ struct FloorPlanPaletteItemButton: View {
     let onDragEnded: (FloorPlanPaletteItem, CGPoint) -> Void
 
     var body: some View {
-        FloorPlanGlassSegment(
-            position: position,
-            size: size,
-            isSelected: false
-        ) {
+        FloorPlanSegment(position: position, size: size, isSelected: false) {
             Label(item.title, systemImage: item.systemImage)
                 .labelStyle(FloorPlanVerticalLabelStyle())
         }

@@ -15,7 +15,7 @@ struct FloorPlanIconButton: View {
     let action: () -> Void
 
     var body: some View {
-        FloorPlanGlassSegmentButton(
+        FloorPlanSegmentButton(
             position: position,
             size: CGSize(width: size, height: size),
             isSelected: false,

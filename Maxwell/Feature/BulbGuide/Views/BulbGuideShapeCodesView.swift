@@ -43,29 +43,30 @@ struct BulbGuideShapeCodesView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: BulbSpacing.lg) {
-                BulbCard {
+                GroupBox {
                     VStack(alignment: .leading, spacing: BulbSpacing.sm) {
-                        BulbSectionHeader("Shape codes")
                         Text("Shape codes describe the bulb envelope and help ensure fit and light distribution.")
                             .font(.subheadline)
-                            .foregroundStyle(Color.bulbInkMuted)
+                            .foregroundStyle(.secondary)
                     }
+                } label: {
+                    Text("Shape codes")
                 }
 
                 ForEach(groups) { group in
-                    BulbCard {
+                    GroupBox {
                         VStack(alignment: .leading, spacing: BulbSpacing.sm) {
-                            BulbSectionHeader(group.title)
                             ForEach(group.entries) { entry in
                                 BulbGuideShapeRowView(entry: entry)
                             }
                         }
+                    } label: {
+                        Text(group.title)
                     }
                 }
             }
             .padding(BulbSpacing.lg)
         }
-        .background(Color.bulbCanvas)
         .navigationTitle("Bulb Shapes")
     }
 }

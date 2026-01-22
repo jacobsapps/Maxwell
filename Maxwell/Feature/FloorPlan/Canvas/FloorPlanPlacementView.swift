@@ -29,13 +29,12 @@ struct FloorPlanPlacementView: View {
                 .position(position)
             case .bulb:
                 Circle()
-                    .fill(Color.bulbWarm)
+                    .fill(.tint)
                     .frame(width: placement.size.width, height: placement.size.height)
                     .overlay {
                         Circle()
-                            .strokeBorder(Color.bulbEdge.opacity(0.7), lineWidth: 2)
+                            .strokeBorder(.secondary, lineWidth: 2)
                     }
-                    .shadow(color: Color.bulbGlow, radius: BulbMetrics.glowRadius / 2, x: 0, y: 4)
                     .position(position)
             }
         }

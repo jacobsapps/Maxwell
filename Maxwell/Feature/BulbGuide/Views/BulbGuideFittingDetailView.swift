@@ -13,49 +13,51 @@ struct BulbGuideFittingDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: BulbSpacing.lg) {
-                BulbCard {
+                GroupBox {
                     HStack(spacing: BulbSpacing.md) {
                         BulbGuideFittingIconView(assetName: family.imageAsset, size: 64)
                         VStack(alignment: .leading, spacing: BulbSpacing.xs) {
                             Text(family.name)
                                 .font(.title3)
                                 .bold()
-                                .foregroundStyle(Color.bulbInk)
                             Text(family.typicalUse)
                                 .font(.subheadline)
-                                .foregroundStyle(Color.bulbInkMuted)
+                                .foregroundStyle(.secondary)
                         }
                         Spacer()
                     }
                 }
 
-                BulbCard {
+                GroupBox {
                     VStack(alignment: .leading, spacing: BulbSpacing.sm) {
-                        BulbSectionHeader("Common sizes")
                         ScrollView(.horizontal) {
                             HStack(spacing: BulbSpacing.sm) {
                                 ForEach(family.sizes, id: \.self) { size in
-                                    BulbChip(title: size, tone: .neutral)
+                                    Text(size)
+                                        .font(.caption)
+                                        .padding(.horizontal, BulbSpacing.sm)
+                                        .padding(.vertical, BulbSpacing.xs)
+                                        .background(.thinMaterial, in: .capsule)
                                 }
                             }
                             .padding(.vertical, BulbSpacing.xs)
                         }
                         .scrollIndicators(.hidden)
                     }
+                } label: {
+                    Text("Common sizes")
                 }
 
-                BulbCard {
-                    VStack(alignment: .leading, spacing: BulbSpacing.sm) {
-                        BulbSectionHeader("Notes")
-                        Text(family.notes)
-                            .font(.subheadline)
-                            .foregroundStyle(Color.bulbInkMuted)
-                    }
+                GroupBox {
+                    Text(family.notes)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                } label: {
+                    Text("Notes")
                 }
             }
             .padding(BulbSpacing.lg)
         }
-        .background(Color.bulbCanvas)
         .navigationTitle(family.name)
     }
 }

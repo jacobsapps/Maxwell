@@ -14,10 +14,9 @@ struct BulbGuideTopicRowView: View {
         VStack(alignment: .leading, spacing: BulbSpacing.xs) {
             Label(topic.title, systemImage: topic.systemImage)
                 .font(.headline)
-                .foregroundStyle(Color.bulbInk)
             Text(topic.subtitle)
                 .font(.subheadline)
-                .foregroundStyle(Color.bulbInkMuted)
+                .foregroundStyle(.secondary)
         }
         .padding(.vertical, BulbSpacing.xs)
     }

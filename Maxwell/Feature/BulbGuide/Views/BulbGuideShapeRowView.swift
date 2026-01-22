@@ -14,13 +14,12 @@ struct BulbGuideShapeRowView: View {
         VStack(alignment: .leading, spacing: BulbSpacing.xs) {
             Text(entry.code)
                 .font(.headline)
-                .foregroundStyle(Color.bulbInk)
             Text(entry.description)
                 .font(.subheadline)
-                .foregroundStyle(Color.bulbInkMuted)
+                .foregroundStyle(.secondary)
             Text("Typical use: \(entry.typicalUse)")
                 .font(.caption)
-                .foregroundStyle(Color.bulbInkMuted)
+                .foregroundStyle(.secondary)
         }
         .padding(.vertical, BulbSpacing.xs)
     }

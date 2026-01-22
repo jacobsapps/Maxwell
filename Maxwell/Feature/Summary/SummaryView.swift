@@ -30,13 +30,17 @@ struct SummaryView: View {
                             }
                         }
                     } header: {
-                        BulbSectionHeader(floor.name, subtitle: summary.floorSubtitle(for: floor))
+                        VStack(alignment: .leading) {
+                            Text(floor.name)
+                                .font(.headline)
+                            Text(summary.floorSubtitle(for: floor))
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
             }
             .listStyle(.insetGrouped)
-            .scrollContentBackground(.hidden)
-            .background(Color.bulbCanvas)
             .overlay {
                 if summary.floors.isEmpty {
                     ContentUnavailableView(

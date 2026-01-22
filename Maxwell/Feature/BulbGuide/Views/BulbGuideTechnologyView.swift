@@ -80,24 +80,24 @@ struct BulbGuideTechnologyView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: BulbSpacing.lg) {
-                BulbCard {
+                GroupBox {
                     VStack(alignment: .leading, spacing: BulbSpacing.sm) {
-                        BulbSectionHeader("Technology types")
                         Text("Technology describes how the bulb creates light, which affects efficiency, heat, and lifespan.")
                             .font(.subheadline)
-                            .foregroundStyle(Color.bulbInkMuted)
+                            .foregroundStyle(.secondary)
                     }
+                } label: {
+                    Text("Technology types")
                 }
 
                 ForEach(technologies) { technology in
-                    BulbCard {
+                    GroupBox {
                         BulbGuideTechnologyRowView(technology: technology)
                     }
                 }
             }
             .padding(BulbSpacing.lg)
         }
-        .background(Color.bulbCanvas)
         .navigationTitle("Technology Types")
     }
 }

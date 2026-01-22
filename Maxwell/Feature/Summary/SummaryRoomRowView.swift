@@ -16,7 +16,6 @@ struct SummaryRoomRowView: View {
         VStack(alignment: .leading, spacing: BulbSpacing.xs) {
             Label(roomTitle, systemImage: "square.grid.2x2")
                 .font(.headline)
-                .foregroundStyle(Color.bulbInk)
             if bulbs.isEmpty {
                 Text("No bulbs yet")
                     .font(.subheadline)
@@ -25,7 +24,11 @@ struct SummaryRoomRowView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: BulbSpacing.sm) {
                         ForEach(bulbs.enumerated(), id: \.element.id) { index, _ in
-                            BulbChip(title: bulbTitle(index), tone: .neutral)
+                            Text(bulbTitle(index))
+                                .font(.caption)
+                                .padding(.horizontal, BulbSpacing.sm)
+                                .padding(.vertical, BulbSpacing.xs)
+                                .background(.thinMaterial, in: .capsule)
                         }
                     }
                     .padding(.vertical, BulbSpacing.xs)

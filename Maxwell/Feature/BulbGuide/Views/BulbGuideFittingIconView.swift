@@ -22,9 +22,9 @@ struct BulbGuideFittingIconView: View {
             .resizable()
             .scaledToFit()
             .frame(width: size, height: size)
-            .foregroundStyle(Color.bulbInk)
+            .foregroundStyle(.primary)
             .padding(BulbSpacing.xs)
-            .background(Color.bulbSurface, in: .rect(cornerRadius: BulbMetrics.smallCornerRadius))
+            .background(.thinMaterial, in: .rect(cornerRadius: BulbMetrics.smallCornerRadius))
             .clipShape(.rect(cornerRadius: BulbMetrics.smallCornerRadius))
     }
 }
