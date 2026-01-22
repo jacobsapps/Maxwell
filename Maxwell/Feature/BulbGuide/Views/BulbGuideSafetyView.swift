@@ -29,26 +29,28 @@ struct BulbGuideSafetyView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: BulbSpacing.lg) {
-                BulbCard {
+                GroupBox {
                     VStack(alignment: .leading, spacing: BulbSpacing.sm) {
-                        BulbSectionHeader("Safety & compliance")
                         Text("Pay attention to certifications and materials when choosing bulbs.")
                             .font(.subheadline)
-                            .foregroundStyle(Color.bulbInkMuted)
+                            .foregroundStyle(.secondary)
                     }
+                } label: {
+                    Text("Safety & compliance")
                 }
 
-                BulbCard {
+                GroupBox {
                     VStack(alignment: .leading, spacing: BulbSpacing.sm) {
                         ForEach(safetyItems) { item in
                             BulbGuideSpecRowView(item: item)
                         }
                     }
+                } label: {
+                    Text("Safety details")
                 }
             }
             .padding(BulbSpacing.lg)
         }
-        .background(Color.bulbCanvas)
         .navigationTitle("Safety")
     }
 }

@@ -29,17 +29,20 @@ struct BulbGuideTemperatureRowView: View {
             VStack(alignment: .leading, spacing: BulbSpacing.xs) {
                 Text("\(swatch.kelvin)K")
                     .font(.headline)
-                    .foregroundStyle(Color.bulbInk)
                 Text(swatch.description)
                     .font(.subheadline)
-                    .foregroundStyle(Color.bulbInkMuted)
+                    .foregroundStyle(.secondary)
             }
             Spacer()
             VStack(alignment: .trailing, spacing: BulbSpacing.xs) {
-                BulbChip(title: toneLabel, tone: swatch.tone)
+                Text(toneLabel)
+                    .font(.caption)
+                    .padding(.horizontal, BulbSpacing.sm)
+                    .padding(.vertical, BulbSpacing.xs)
+                    .background(.thinMaterial, in: .capsule)
                 Text(swatch.hex)
                     .font(.caption)
-                    .foregroundStyle(Color.bulbInkMuted)
+                    .foregroundStyle(.secondary)
             }
         }
         .padding(.vertical, BulbSpacing.xs)

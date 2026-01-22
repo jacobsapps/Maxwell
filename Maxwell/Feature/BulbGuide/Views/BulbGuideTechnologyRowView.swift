@@ -14,16 +14,15 @@ struct BulbGuideTechnologyRowView: View {
         VStack(alignment: .leading, spacing: BulbSpacing.xs) {
             Text(technology.name)
                 .font(.headline)
-                .foregroundStyle(Color.bulbInk)
             Text(technology.description)
                 .font(.subheadline)
-                .foregroundStyle(Color.bulbInkMuted)
+                .foregroundStyle(.secondary)
             Text("Typical uses: \(technology.typicalUses)")
                 .font(.caption)
-                .foregroundStyle(Color.bulbInkMuted)
+                .foregroundStyle(.secondary)
             Text(technology.notes)
                 .font(.caption)
-                .foregroundStyle(Color.bulbInkMuted)
+                .foregroundStyle(.secondary)
         }
     }
 }

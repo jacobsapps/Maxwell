@@ -18,17 +18,9 @@ struct FloorPlanControlsOverlayView: View {
     var body: some View {
         let controlsHidden = placementState != nil
 
-        Group {
-            if #available(iOS 26, *) {
-                GlassEffectContainer(spacing: glassSpacing) {
-                    controlsBody(controlsHidden: controlsHidden)
-                }
-            } else {
-                controlsBody(controlsHidden: controlsHidden)
-            }
-        }
-        .padding(.horizontal, horizontalPadding)
-        .animation(.snappy, value: controlsHidden)
+        controlsBody(controlsHidden: controlsHidden)
+            .padding(.horizontal, horizontalPadding)
+            .animation(.snappy, value: controlsHidden)
     }
 
     @ViewBuilder

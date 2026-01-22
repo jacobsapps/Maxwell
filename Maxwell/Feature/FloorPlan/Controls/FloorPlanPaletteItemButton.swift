@@ -14,7 +14,7 @@ struct FloorPlanPaletteItemButton: View {
     let action: () -> Void
 
     var body: some View {
-        FloorPlanGlassSegmentButton(
+        FloorPlanSegmentButton(
             position: position,
             size: size,
             isSelected: false,

@@ -14,14 +14,13 @@ struct BulbGuideSpecRowView: View {
         VStack(alignment: .leading, spacing: BulbSpacing.xs) {
             Text(item.title)
                 .font(.headline)
-                .foregroundStyle(Color.bulbInk)
             Text(item.detail)
                 .font(.subheadline)
-                .foregroundStyle(Color.bulbInkMuted)
+                .foregroundStyle(.secondary)
             if let notes = item.notes {
                 Text(notes)
                     .font(.caption)
-                    .foregroundStyle(Color.bulbInkMuted)
+                    .foregroundStyle(.secondary)
             }
         }
         .padding(.vertical, BulbSpacing.xs)

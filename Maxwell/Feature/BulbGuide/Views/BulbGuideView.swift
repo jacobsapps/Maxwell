@@ -51,18 +51,13 @@ struct BulbGuideView: View {
         NavigationStack {
             List {
                 Section {
-                    BulbCard {
-                        VStack(alignment: .leading, spacing: BulbSpacing.sm) {
-                            Text("Bulb Guide")
-                                .font(.headline)
-                                .foregroundStyle(Color.bulbInk)
-                            Text("Use this reference to compare fittings, shapes, and performance while planning your lighting.")
-                                .font(.subheadline)
-                                .foregroundStyle(Color.bulbInkMuted)
-                        }
+                    VStack(alignment: .leading, spacing: BulbSpacing.sm) {
+                        Text("Bulb Guide")
+                            .font(.headline)
+                        Text("Use this reference to compare fittings, shapes, and performance while planning your lighting.")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
                     }
-                    .listRowBackground(Color.bulbCanvas)
-                    .listRowInsets(EdgeInsets(top: BulbSpacing.xs, leading: 0, bottom: BulbSpacing.xs, trailing: 0))
                 }
 
                 Section {
@@ -72,12 +67,16 @@ struct BulbGuideView: View {
                         }
                     }
                 } header: {
-                    BulbSectionHeader("Guide Sections", subtitle: "Tap a topic to explore the details.")
+                    VStack(alignment: .leading) {
+                        Text("Guide Sections")
+                            .font(.headline)
+                        Text("Tap a topic to explore the details.")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
                 }
             }
             .listStyle(.insetGrouped)
-            .scrollContentBackground(.hidden)
-            .background(Color.bulbCanvas)
             .navigationTitle("Bulb Guide")
             .navigationDestination(for: BulbGuideDestination.self) { destination in
                 switch destination {

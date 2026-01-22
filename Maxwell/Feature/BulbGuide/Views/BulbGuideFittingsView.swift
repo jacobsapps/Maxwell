@@ -85,12 +85,16 @@ struct BulbGuideFittingsView: View {
                     }
                 }
             } header: {
-                BulbSectionHeader("Fitting Families", subtitle: "Match the base to your fixture.")
+                VStack(alignment: .leading) {
+                    Text("Fitting Families")
+                        .font(.headline)
+                    Text("Match the base to your fixture.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
             }
         }
         .listStyle(.insetGrouped)
-        .scrollContentBackground(.hidden)
-        .background(Color.bulbCanvas)
         .navigationTitle("Fittings")
     }
 }

@@ -80,45 +80,48 @@ struct BulbGuidePerformanceView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: BulbSpacing.lg) {
-                BulbCard {
+                GroupBox {
                     VStack(alignment: .leading, spacing: BulbSpacing.sm) {
-                        BulbSectionHeader("Performance & electrical")
                         Text("Compare how bulbs draw power and how efficiently they produce light.")
                             .font(.subheadline)
-                            .foregroundStyle(Color.bulbInkMuted)
+                            .foregroundStyle(.secondary)
                     }
+                } label: {
+                    Text("Performance & electrical")
                 }
 
-                BulbCard {
+                GroupBox {
                     VStack(alignment: .leading, spacing: BulbSpacing.sm) {
-                        BulbSectionHeader("Electrical")
                         ForEach(electrical) { item in
                             BulbGuideSpecRowView(item: item)
                         }
                     }
+                } label: {
+                    Text("Electrical")
                 }
 
-                BulbCard {
+                GroupBox {
                     VStack(alignment: .leading, spacing: BulbSpacing.sm) {
-                        BulbSectionHeader("Optics")
                         ForEach(optics) { item in
                             BulbGuideSpecRowView(item: item)
                         }
                     }
+                } label: {
+                    Text("Optics")
                 }
 
-                BulbCard {
+                GroupBox {
                     VStack(alignment: .leading, spacing: BulbSpacing.sm) {
-                        BulbSectionHeader("Performance")
                         ForEach(performance) { item in
                             BulbGuideSpecRowView(item: item)
                         }
                     }
+                } label: {
+                    Text("Performance")
                 }
             }
             .padding(BulbSpacing.lg)
         }
-        .background(Color.bulbCanvas)
         .navigationTitle("Performance")
     }
 }

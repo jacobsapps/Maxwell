@@ -49,36 +49,38 @@ struct BulbGuideColorTemperatureView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: BulbSpacing.lg) {
-                BulbCard {
+                GroupBox {
                     VStack(alignment: .leading, spacing: BulbSpacing.sm) {
-                        BulbSectionHeader("Color temperature")
                         Text("Color temperature (CCT) describes the warmth of a bulb on the Kelvin scale.")
                             .font(.subheadline)
-                            .foregroundStyle(Color.bulbInkMuted)
+                            .foregroundStyle(.secondary)
                     }
+                } label: {
+                    Text("Color temperature")
                 }
 
-                BulbCard {
+                GroupBox {
                     VStack(alignment: .leading, spacing: BulbSpacing.sm) {
-                        BulbSectionHeader("Kelvin swatches")
                         ForEach(swatches) { swatch in
                             BulbGuideTemperatureRowView(swatch: swatch)
                         }
                     }
+                } label: {
+                    Text("Kelvin swatches")
                 }
 
-                BulbCard {
+                GroupBox {
                     VStack(alignment: .leading, spacing: BulbSpacing.sm) {
-                        BulbSectionHeader("Choosing the right range")
                         ForEach(guidance) { item in
                             BulbGuideSpecRowView(item: item)
                         }
                     }
+                } label: {
+                    Text("Choosing the right range")
                 }
             }
             .padding(BulbSpacing.lg)
         }
-        .background(Color.bulbCanvas)
         .navigationTitle("Color Temperature")
     }
 }

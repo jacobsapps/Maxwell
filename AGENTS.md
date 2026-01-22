@@ -78,7 +78,7 @@ Run + UI verification (simulator):
 This repository contains an Xcode project written with Swift and SwiftUI. Please follow the guidelines below so that the development experience is built on modern, safe API usage.
 
 ## Architecture (Maxwell)
-- Three tabs: Floor Plan (builder, B1 focus), Interactive Floor Plan, Summary.
+- Three tabs: Floor Plan, Summary, Bulb Guide.
 - V1 floor plan editor: rectangles only; expand later to custom/merged shapes.
 - Gestures: touch-to-join squares, long-press to add bulbs, drag to move.
 - Prefer default SwiftUI components where possible.

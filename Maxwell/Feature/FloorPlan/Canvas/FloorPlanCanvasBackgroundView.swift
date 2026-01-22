@@ -10,11 +10,6 @@ import SwiftUI
 struct FloorPlanCanvasBackgroundView: View {
     var body: some View {
         Rectangle()
-            .fill(Color.bulbCanvas)
-            .overlay {
-                Rectangle()
-                    .fill(BulbGradients.glassSheen)
-                    .opacity(0.35)
-            }
+            .fill(.background)
     }
 }

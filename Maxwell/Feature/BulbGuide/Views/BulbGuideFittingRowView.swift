@@ -16,10 +16,9 @@ struct BulbGuideFittingRowView: View {
             VStack(alignment: .leading, spacing: BulbSpacing.xs) {
                 Text(family.name)
                     .font(.headline)
-                    .foregroundStyle(Color.bulbInk)
                 Text(family.typicalUse)
                     .font(.subheadline)
-                    .foregroundStyle(Color.bulbInkMuted)
+                    .foregroundStyle(.secondary)
             }
         }
         .padding(.vertical, BulbSpacing.xs)
