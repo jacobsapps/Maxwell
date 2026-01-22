@@ -27,17 +27,17 @@ struct ContentView: View {
                 Label("Floor Plan", systemImage: "square.grid.3x3")
                     .accessibilityIdentifier("tab.floorPlan")
             }
-            Tab(value: AppTab.interactive) {
-                InteractiveFloorPlanView(viewModel: appModel.floorPlanBuilder)
-            } label: {
-                Label("Interactive", systemImage: "hand.draw")
-                    .accessibilityIdentifier("tab.interactive")
-            }
             Tab(value: AppTab.summary) {
                 SummaryView(viewModel: appModel.floorPlanBuilder)
             } label: {
                 Label("Summary", systemImage: "list.bullet.rectangle")
                     .accessibilityIdentifier("tab.summary")
+            }
+            Tab(value: AppTab.guide) {
+                BulbGuideView()
+            } label: {
+                Label("Bulb Guide", systemImage: "lightbulb")
+                    .accessibilityIdentifier("tab.guide")
             }
         }
         .onAppear {
@@ -52,8 +52,8 @@ struct ContentView: View {
 
 private enum AppTab: Hashable {
     case floorPlan
-    case interactive
     case summary
+    case guide
 }
 
 #Preview {
