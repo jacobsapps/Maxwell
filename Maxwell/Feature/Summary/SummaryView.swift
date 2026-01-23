@@ -23,7 +23,7 @@ struct SummaryView: View {
                             ForEach(floor.rooms.enumerated(), id: \.element.id) { index, room in
                                 let bulbs = summary.bulbs(for: room, in: floor)
                                 SummaryRoomRowView(
-                                    roomTitle: summary.roomTitle(for: index),
+                                    roomTitle: summary.roomTitle(for: room, index: index),
                                     bulbs: bulbs,
                                     bulbTitle: summary.bulbTitle
                                 )

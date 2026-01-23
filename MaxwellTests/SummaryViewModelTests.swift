@@ -22,7 +22,7 @@ struct SummaryViewModelTests {
     }
 
     @Test func floorSubtitlePluralization() {
-        let room = FloorPlanRoom(center: .zero, size: CGSize(width: 10, height: 10), rotation: .zero)
+        let room = FloorPlanRoom(name: "Room 1", center: .zero, size: CGSize(width: 10, height: 10), rotation: .zero)
         let bulb = makeBulb(position: .zero, roomID: room.id)
         let floor = FloorPlanFloor(name: "Floor 1", rooms: [room], bulbs: [bulb])
         let viewModel = SummaryViewModel(floors: [floor])
@@ -31,8 +31,8 @@ struct SummaryViewModelTests {
     }
 
     @Test func bulbsFilterByRoom() {
-        let roomA = FloorPlanRoom(center: .zero, size: CGSize(width: 10, height: 10), rotation: .zero)
-        let roomB = FloorPlanRoom(center: CGPoint(x: 20, y: 20), size: CGSize(width: 10, height: 10), rotation: .zero)
+        let roomA = FloorPlanRoom(name: "Room A", center: .zero, size: CGSize(width: 10, height: 10), rotation: .zero)
+        let roomB = FloorPlanRoom(name: "Room B", center: CGPoint(x: 20, y: 20), size: CGSize(width: 10, height: 10), rotation: .zero)
         let bulbs: [FloorPlanBulb] = [
             makeBulb(position: .zero, roomID: roomA.id),
             makeBulb(position: CGPoint(x: 5, y: 5), roomID: roomA.id),
@@ -50,7 +50,20 @@ struct SummaryViewModelTests {
     @Test func titleHelpersIncrementFromOne() {
         let viewModel = SummaryViewModel(floors: [])
 
-        #expect(viewModel.roomTitle(for: 0) == "Room 1")
         #expect(viewModel.bulbTitle(for: 2) == "Bulb 3")
+    }
+
+    @Test func roomTitleUsesRoomName() {
+        let viewModel = SummaryViewModel(floors: [])
+        let room = FloorPlanRoom(name: "Kitchen", center: .zero, size: CGSize(width: 10, height: 10), rotation: .zero)
+
+        #expect(viewModel.roomTitle(for: room, index: 0) == "Kitchen")
+    }
+
+    @Test func roomTitleFallsBackWhenEmpty() {
+        let viewModel = SummaryViewModel(floors: [])
+        let room = FloorPlanRoom(name: "   ", center: .zero, size: CGSize(width: 10, height: 10), rotation: .zero)
+
+        #expect(viewModel.roomTitle(for: room, index: 1) == "Room 2")
     }
 }

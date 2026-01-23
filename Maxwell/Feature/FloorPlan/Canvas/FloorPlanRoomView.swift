@@ -24,13 +24,20 @@ struct FloorPlanRoomView: View {
             x: room.center.x + adjustedTranslation.width,
             y: room.center.y + adjustedTranslation.height
         )
-        FloorPlanRoomShapeView(room: room, isOverlapping: false)
-            .rotationEffect(room.rotation + rotationDelta)
-            .position(x: center.x + proposedCenter.x, y: center.y + proposedCenter.y)
-            .gesture(roomDragGesture())
-            .simultaneousGesture(roomRotationGesture())
-            .accessibilityLabel(Text("Room"))
-            .accessibilityIdentifier("FloorPlanRoom")
+        ZStack(alignment: .bottom) {
+            FloorPlanRoomShapeView(room: room, isOverlapping: false)
+            FloorPlanRoomNameView(
+                room: room,
+                isContentDragActive: $isContentDragActive,
+                viewModel: viewModel
+            )
+        }
+        .rotationEffect(room.rotation + rotationDelta)
+        .position(x: center.x + proposedCenter.x, y: center.y + proposedCenter.y)
+        .gesture(roomDragGesture())
+        .simultaneousGesture(roomRotationGesture())
+        .accessibilityLabel(Text("Room"))
+        .accessibilityIdentifier("FloorPlanRoom")
     }
 
     private func roomDragGesture() -> some Gesture {

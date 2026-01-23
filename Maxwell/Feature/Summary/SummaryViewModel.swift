@@ -20,8 +20,9 @@ struct SummaryViewModel {
         return "\(roomCount) \(pluralized(roomCount, singular: "Room")) | \(bulbCount) \(pluralized(bulbCount, singular: "Bulb"))"
     }
 
-    func roomTitle(for index: Int) -> String {
-        "Room \(index + 1)"
+    func roomTitle(for room: FloorPlanRoom, index: Int) -> String {
+        let trimmed = room.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? "Room \(index + 1)" : trimmed
     }
 
     func bulbTitle(for index: Int) -> String {

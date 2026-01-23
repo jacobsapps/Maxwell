@@ -10,9 +10,13 @@ import SwiftUI
 @testable import Maxwell
 
 struct FloorPlanBuilderViewModelTests {
-    @MainActor private func makeViewModel() throws -> FloorPlanBuilderViewModel {
+    @MainActor private func makeStore() throws -> MaxwellDataStore {
         let database = try AppDatabase.makeInMemory()
-        let store = MaxwellDataStore(dbWriter: database)
+        return MaxwellDataStore(dbWriter: database)
+    }
+
+    @MainActor private func makeViewModel(store: MaxwellDataStore? = nil) throws -> FloorPlanBuilderViewModel {
+        let store = try store ?? makeStore()
         return FloorPlanBuilderViewModel(store: store)
     }
 
@@ -39,7 +43,7 @@ struct FloorPlanBuilderViewModelTests {
         let viewModel = try makeViewModel()
         viewModel.addRoom(center: CGPoint(x: 0, y: 0), size: CGSize(width: 100, height: 100), rotation: .zero)
 
-        let candidate = FloorPlanRoom(center: CGPoint(x: 10, y: 10), size: CGSize(width: 80, height: 80), rotation: .zero)
+        let candidate = FloorPlanRoom(name: "Candidate", center: CGPoint(x: 10, y: 10), size: CGSize(width: 80, height: 80), rotation: .zero)
 
         #expect(viewModel.overlaps(candidate: candidate) == true)
     }
@@ -56,6 +60,41 @@ struct FloorPlanBuilderViewModelTests {
         let outsideLocal = CGPoint(x: 60, y: 0)
         let outsideGlobal = outsideLocal.rotated(by: rotation.radians)
         #expect(viewModel.roomContaining(point: outsideGlobal) == nil)
+    }
+
+    @Test @MainActor func renameRoomTrimsWhitespace() throws {
+        let viewModel = try makeViewModel()
+        viewModel.addRoom(center: .zero, size: CGSize(width: 80, height: 60), rotation: .zero)
+
+        let roomID = try #require(viewModel.selectedFloor.rooms.first?.id)
+        viewModel.renameRoom(id: roomID, name: "  Living Room  ")
+
+        let updatedName = viewModel.selectedFloor.rooms.first?.name
+        #expect(updatedName == "Living Room")
+    }
+
+    @Test @MainActor func renameRoomRejectsEmptyName() throws {
+        let viewModel = try makeViewModel()
+        viewModel.addRoom(center: .zero, size: CGSize(width: 80, height: 60), rotation: .zero)
+
+        let room = try #require(viewModel.selectedFloor.rooms.first)
+        viewModel.renameRoom(id: room.id, name: "   ")
+
+        let updatedName = viewModel.selectedFloor.rooms.first?.name
+        #expect(updatedName == room.name)
+    }
+
+    @Test @MainActor func renameRoomPersistsToStore() throws {
+        let store = try makeStore()
+        let viewModel = try makeViewModel(store: store)
+        viewModel.addRoom(center: .zero, size: CGSize(width: 80, height: 60), rotation: .zero)
+
+        let roomID = try #require(viewModel.selectedFloor.rooms.first?.id)
+        viewModel.renameRoom(id: roomID, name: "Office")
+
+        let reloaded = try makeViewModel(store: store)
+        let persistedName = reloaded.selectedFloor.rooms.first?.name
+        #expect(persistedName == "Office")
     }
 
     @Test @MainActor func newBulbInheritsMostRecentRoomConfig() throws {

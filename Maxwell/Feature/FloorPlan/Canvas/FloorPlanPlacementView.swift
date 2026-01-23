@@ -22,7 +22,7 @@ struct FloorPlanPlacementView: View {
             switch placement.item {
             case .room:
                 FloorPlanRoomShapeView(
-                    room: FloorPlanRoom(center: .zero, size: placement.size, rotation: placement.rotation),
+                    room: FloorPlanRoom(name: "Room", center: .zero, size: placement.size, rotation: placement.rotation),
                     isOverlapping: placement.isOverlapping
                 )
                 .rotationEffect(placement.rotation)
