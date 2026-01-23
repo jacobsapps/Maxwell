@@ -28,8 +28,9 @@ struct FloorPlanPlacementView: View {
                 .rotationEffect(placement.rotation)
                 .position(position)
             case .bulb:
+                let previewColor = BulbColorOption.defaultOption.color
                 Circle()
-                    .fill(.tint)
+                    .fill(previewColor)
                     .frame(width: placement.size.width, height: placement.size.height)
                     .overlay {
                         Circle()

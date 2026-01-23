@@ -10,10 +10,20 @@ import SwiftUI
 @testable import Maxwell
 
 struct SummaryViewModelTests {
+    private func makeBulb(position: CGPoint, roomID: UUID) -> FloorPlanBulb {
+        FloorPlanBulb(
+            position: position,
+            roomID: roomID,
+            fittingSize: Bulb.defaultFittingSize,
+            colorId: Bulb.defaultColorId,
+            isWorking: true,
+            createdAt: Date()
+        )
+    }
 
     @Test func floorSubtitlePluralization() {
         let room = FloorPlanRoom(center: .zero, size: CGSize(width: 10, height: 10), rotation: .zero)
-        let bulb = FloorPlanBulb(position: .zero, roomID: room.id)
+        let bulb = makeBulb(position: .zero, roomID: room.id)
         let floor = FloorPlanFloor(name: "Floor 1", rooms: [room], bulbs: [bulb])
         let viewModel = SummaryViewModel(floors: [floor])
 
@@ -24,9 +34,9 @@ struct SummaryViewModelTests {
         let roomA = FloorPlanRoom(center: .zero, size: CGSize(width: 10, height: 10), rotation: .zero)
         let roomB = FloorPlanRoom(center: CGPoint(x: 20, y: 20), size: CGSize(width: 10, height: 10), rotation: .zero)
         let bulbs: [FloorPlanBulb] = [
-            FloorPlanBulb(position: .zero, roomID: roomA.id),
-            FloorPlanBulb(position: CGPoint(x: 5, y: 5), roomID: roomA.id),
-            FloorPlanBulb(position: CGPoint(x: 2, y: 2), roomID: roomB.id)
+            makeBulb(position: .zero, roomID: roomA.id),
+            makeBulb(position: CGPoint(x: 5, y: 5), roomID: roomA.id),
+            makeBulb(position: CGPoint(x: 2, y: 2), roomID: roomB.id)
         ]
         let floor = FloorPlanFloor(name: "Floor 1", rooms: [roomA, roomB], bulbs: bulbs)
         let viewModel = SummaryViewModel(floors: [floor])
