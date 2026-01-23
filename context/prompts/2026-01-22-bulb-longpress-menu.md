@@ -12,6 +12,8 @@ Assistant: Pulled main, switched branch, implemented, and verified.
 User: Asked for screenshot; assistant added screenshot and PR update.
 User: Requested tap instead of long press, status submenu, color icon shape.
 Assistant: Switched menu to tap, added status submenu, kept color swatch icon; rebuilt/tests.
+User: Reported giant circle preview and pan issues; wants color icon only and pan restored.
+Assistant: Reworked menu label to avoid preview and restore pan; rebuilt/tests.
 
 # Initial User Prompt
 Are there any TODOs that need doing?
@@ -22,7 +24,8 @@ Are there any TODOs that need doing?
 - Use a simplified color list: Warm 2700K, Neutral 4000K, Cool 5000K; store colorId and map to swatches.
 - New bulbs inherit fitting + color from the most recently added bulb in the same room; working status defaults to true.
 - Minimal migration only: add columns with defaults via a new migration (no backfill scripts).
-- UI menu now opens on tap (Menu) instead of long-press; status is a submenu with Working/Broken choices.
+- UI menu opens on tap (Menu) instead of long-press; status is a submenu with Working/Broken choices.
+- Menu label is now a clear hit target layered over the bulb to avoid giant preview and to keep canvas panning working.
 - Build and run floor plan view model unit tests; PR includes UI screenshot.
 
 # Key Context (Files + Notes)

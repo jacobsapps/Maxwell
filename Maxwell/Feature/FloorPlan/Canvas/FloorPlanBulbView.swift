@@ -35,9 +35,8 @@ struct FloorPlanBulbView: View {
                 Circle()
                     .strokeBorder(.secondary.opacity(bulbOpacity), lineWidth: 2)
             }
-            .position(x: center.x + proposedPosition.x, y: center.y + proposedPosition.y)
 
-        Menu {
+        let menu = Menu {
             Menu {
                 ForEach(BulbFittingFamily.catalog) { family in
                     ForEach(family.sizes, id: \.self) { size in
@@ -116,8 +115,16 @@ struct FloorPlanBulbView: View {
                 )
             }
         } label: {
-            bulbView
+            Color.clear
+                .frame(width: bulbSize, height: bulbSize)
         }
+
+        ZStack {
+            bulbView
+            menu
+        }
+        .frame(width: bulbSize, height: bulbSize)
+        .position(x: center.x + proposedPosition.x, y: center.y + proposedPosition.y)
         .simultaneousGesture(bulbDragGesture())
         .accessibilityLabel(Text("Bulb"))
         .accessibilityIdentifier("FloorPlanBulb")
