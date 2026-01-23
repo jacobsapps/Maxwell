@@ -16,7 +16,7 @@ struct FloorPlanBulbView: View {
     @Bindable var viewModel: FloorPlanBuilderViewModel
 
     @GestureState private var dragTranslation: CGSize = .zero
-    @ScaledMetric(relativeTo: .body) private var bulbSize: CGFloat = 18
+    @ScaledMetric(relativeTo: .body) private var bulbSize: CGFloat = 24
 
     var body: some View {
         let adjustedTranslation = adjustedTranslation(for: dragTranslation)
@@ -27,6 +27,9 @@ struct FloorPlanBulbView: View {
         let colorOption = BulbColorOption.option(for: bulb.colorId) ?? BulbColorOption.defaultOption
         let fittingAsset = BulbFittingFamily.imageAsset(for: bulb.fittingSize)
         let bulbOpacity = bulb.isWorking ? 1.0 : 0.35
+
+        let fittingIconSize: CGFloat = 18
+        let colorIconSize: CGFloat = 14
 
         let bulbView = Circle()
             .fill(colorOption.color.opacity(bulbOpacity))
@@ -43,27 +46,25 @@ struct FloorPlanBulbView: View {
                         Button {
                             viewModel.updateBulbFitting(id: bulb.id, fittingSize: size)
                         } label: {
-                            Label {
-                                Text(size)
-                            } icon: {
+                            HStack(spacing: BulbSpacing.sm) {
                                 Image(family.imageAsset)
                                     .renderingMode(.template)
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 16, height: 16)
+                                    .frame(width: fittingIconSize, height: fittingIconSize)
+                                Text(size)
                             }
                         }
                     }
                 }
             } label: {
-                Label {
-                    Text("Fitting: \(bulb.fittingSize)")
-                } icon: {
+                HStack(spacing: BulbSpacing.sm) {
                     Image(fittingAsset)
                         .renderingMode(.template)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 16, height: 16)
+                        .frame(width: fittingIconSize, height: fittingIconSize)
+                    Text("Fitting: \(bulb.fittingSize)")
                 }
             }
 
@@ -72,22 +73,20 @@ struct FloorPlanBulbView: View {
                     Button {
                         viewModel.updateBulbColor(id: bulb.id, colorId: option.id)
                     } label: {
-                        Label {
-                            Text(option.displayName)
-                        } icon: {
+                        HStack(spacing: BulbSpacing.sm) {
                             Circle()
                                 .fill(option.color)
-                                .frame(width: 14, height: 14)
+                                .frame(width: colorIconSize, height: colorIconSize)
+                            Text(option.displayName)
                         }
                     }
                 }
             } label: {
-                Label {
-                    Text("Color: \(colorOption.displayName)")
-                } icon: {
+                HStack(spacing: BulbSpacing.sm) {
                     Circle()
                         .fill(colorOption.color)
-                        .frame(width: 14, height: 14)
+                        .frame(width: colorIconSize, height: colorIconSize)
+                    Text("Color: \(colorOption.displayName)")
                 }
             }
 

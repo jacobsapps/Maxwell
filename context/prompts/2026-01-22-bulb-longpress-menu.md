@@ -14,6 +14,8 @@ User: Requested tap instead of long press, status submenu, color icon shape.
 Assistant: Switched menu to tap, added status submenu, kept color swatch icon; rebuilt/tests.
 User: Reported giant circle preview and pan issues; wants color icon only and pan restored.
 Assistant: Reworked menu label to avoid preview and restore pan; rebuilt/tests.
+User: Reported oversized fitting icons, small bulb targets, missing color swatch icons.
+Assistant: Standardized icon sizes, enlarged bulbs, used explicit color swatch icons; rebuilt/tests.
 
 # Initial User Prompt
 Are there any TODOs that need doing?
@@ -25,7 +27,9 @@ Are there any TODOs that need doing?
 - New bulbs inherit fitting + color from the most recently added bulb in the same room; working status defaults to true.
 - Minimal migration only: add columns with defaults via a new migration (no backfill scripts).
 - UI menu opens on tap (Menu) instead of long-press; status is a submenu with Working/Broken choices.
-- Menu label is now a clear hit target layered over the bulb to avoid giant preview and to keep canvas panning working.
+- Menu label is a clear hit target layered over the bulb to avoid giant preview and keep canvas panning.
+- Fitting icons are pinned to a consistent size; color menu icons are filled circles.
+- Bulb size increased for easier touch targets.
 - Build and run floor plan view model unit tests; PR includes UI screenshot.
 
 # Key Context (Files + Notes)
