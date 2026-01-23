@@ -10,12 +10,14 @@ import SwiftUI
 
 struct FloorPlanRoom: Identifiable {
     let id: UUID
+    var name: String
     var center: CGPoint
     var size: CGSize
     var rotation: Angle
 
-    init(id: UUID = UUID(), center: CGPoint, size: CGSize, rotation: Angle) {
+    init(id: UUID = UUID(), name: String, center: CGPoint, size: CGSize, rotation: Angle) {
         self.id = id
+        self.name = name
         self.center = center
         self.size = size
         self.rotation = rotation

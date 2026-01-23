@@ -115,10 +115,24 @@ final class FloorPlanBuilderViewModel {
             )
             roomShapeIDs[room.id] = shape.id
             updateSelectedFloor { floor in
-                floor.rooms.append(FloorPlanRoom(id: room.id, center: center, size: size, rotation: rotation))
+                floor.rooms.append(FloorPlanRoom(id: room.id, name: roomName, center: center, size: size, rotation: rotation))
             }
         } catch {
             assertionFailure("Failed to add room: \(error)")
+        }
+    }
+
+    func renameRoom(id: UUID, name: String) {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard trimmed.isEmpty == false else { return }
+        do {
+            try store.updateRoomName(id: id, name: trimmed)
+            updateSelectedFloor { floor in
+                guard let index = floor.rooms.firstIndex(where: { $0.id == id }) else { return }
+                floor.rooms[index].name = trimmed
+            }
+        } catch {
+            assertionFailure("Failed to rename room: \(error)")
         }
     }
 
@@ -361,6 +375,7 @@ final class FloorPlanBuilderViewModel {
 
                 let floorRoom = FloorPlanRoom(
                     id: room.id,
+                    name: room.name,
                     center: CGPoint(x: room.transformTranslationX, y: room.transformTranslationY),
                     size: CGSize(width: shape.sizeWidth, height: shape.sizeHeight),
                     rotation: Angle(radians: room.transformRotationRadians)

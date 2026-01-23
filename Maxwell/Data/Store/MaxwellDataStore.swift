@@ -107,6 +107,14 @@ struct MaxwellDataStore {
         }
     }
 
+    func updateRoomName(id: UUID, name: String) throws {
+        try dbWriter.write { db in
+            try Room.find(id)
+                .update { $0.name = name }
+                .execute(db)
+        }
+    }
+
     func updateRoomTransform(
         id: UUID,
         translationX: Double,
