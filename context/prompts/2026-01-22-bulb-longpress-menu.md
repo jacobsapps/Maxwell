@@ -9,6 +9,9 @@ User: Asked to save detailed plan/context due to context limit.
 Assistant: Saved plan/context and confirmed.
 User: Asked to pull latest main and build plan.
 Assistant: Pulled main, switched branch, implemented, and verified.
+User: Asked for screenshot; assistant added screenshot and PR update.
+User: Requested tap instead of long press, status submenu, color icon shape.
+Assistant: Switched menu to tap, added status submenu, kept color swatch icon; rebuilt/tests.
 
 # Initial User Prompt
 Are there any TODOs that need doing?
@@ -19,7 +22,8 @@ Are there any TODOs that need doing?
 - Use a simplified color list: Warm 2700K, Neutral 4000K, Cool 5000K; store colorId and map to swatches.
 - New bulbs inherit fitting + color from the most recently added bulb in the same room; working status defaults to true.
 - Minimal migration only: add columns with defaults via a new migration (no backfill scripts).
-- Build and run floor plan view model unit tests; create PR when done.
+- UI menu now opens on tap (Menu) instead of long-press; status is a submenu with Working/Broken choices.
+- Build and run floor plan view model unit tests; PR includes UI screenshot.
 
 # Key Context (Files + Notes)
 - Branch for work: `feature-bulb-longpress-menu-2`.
@@ -32,9 +36,10 @@ Are there any TODOs that need doing?
 - Bulb fitting catalog: `Maxwell/Feature/BulbGuide/Models/BulbFittingFamily.swift`.
 - Color options: `Maxwell/Models/BulbColorOption.swift`.
 - Bulb fitting SVG assets: `Maxwell/Assets.xcassets/*` (edison-screw, bayonet, bi-pin, gu10, g9-loop, g13-tube, r7s-linear, gx53, wedge).
+- UI screenshot stored at `docs/screenshots/2026-01-23/bulb-longpress-menu.png` and linked in PR.
 
 # Session Plan Summary
 - Update bulb model/store/migration for fittingSize, colorId, createdAt; add update methods.
 - Extend floor plan state to load/store config, inherit from most recent room bulb, and expose update actions.
-- Implement long-press context menu with fitting/color submenus and working/broken toggle; update bulb rendering color and placement preview.
+- Implement tap-to-open menu with fitting/color submenus and status submenu; update bulb rendering color and placement preview.
 - Verify: build/compile and run floor plan view model unit tests.

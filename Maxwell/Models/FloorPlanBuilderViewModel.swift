@@ -275,7 +275,12 @@ final class FloorPlanBuilderViewModel {
 
     func toggleBulbWorking(id: UUID) {
         guard let bulb = selectedFloor.bulbs.first(where: { $0.id == id }) else { return }
-        let isWorking = !bulb.isWorking
+        setBulbWorking(id: id, isWorking: !bulb.isWorking)
+    }
+
+    func setBulbWorking(id: UUID, isWorking: Bool) {
+        guard let bulb = selectedFloor.bulbs.first(where: { $0.id == id }) else { return }
+        guard bulb.isWorking != isWorking else { return }
         let markedNotWorkingAt = isWorking ? nil : Date()
         updateSelectedFloor { floor in
             guard let index = floor.bulbs.firstIndex(where: { $0.id == id }) else { return }

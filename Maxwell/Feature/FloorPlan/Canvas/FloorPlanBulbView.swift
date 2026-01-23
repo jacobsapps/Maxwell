@@ -28,7 +28,7 @@ struct FloorPlanBulbView: View {
         let fittingAsset = BulbFittingFamily.imageAsset(for: bulb.fittingSize)
         let bulbOpacity = bulb.isWorking ? 1.0 : 0.35
 
-        Circle()
+        let bulbView = Circle()
             .fill(colorOption.color.opacity(bulbOpacity))
             .frame(width: bulbSize, height: bulbSize)
             .overlay {
@@ -36,73 +36,91 @@ struct FloorPlanBulbView: View {
                     .strokeBorder(.secondary.opacity(bulbOpacity), lineWidth: 2)
             }
             .position(x: center.x + proposedPosition.x, y: center.y + proposedPosition.y)
-            .gesture(bulbDragGesture())
-            .contextMenu {
-                Menu {
-                    ForEach(BulbFittingFamily.catalog) { family in
-                        ForEach(family.sizes, id: \.self) { size in
-                            Button {
-                                viewModel.updateBulbFitting(id: bulb.id, fittingSize: size)
-                            } label: {
-                                Label {
-                                    Text(size)
-                                } icon: {
-                                    Image(family.imageAsset)
-                                        .renderingMode(.template)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 16, height: 16)
-                                }
-                            }
-                        }
-                    }
-                } label: {
-                    Label {
-                        Text("Fitting: \(bulb.fittingSize)")
-                    } icon: {
-                        Image(fittingAsset)
-                            .renderingMode(.template)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 16, height: 16)
-                    }
-                }
 
-                Menu {
-                    ForEach(BulbColorOption.options) { option in
+        Menu {
+            Menu {
+                ForEach(BulbFittingFamily.catalog) { family in
+                    ForEach(family.sizes, id: \.self) { size in
                         Button {
-                            viewModel.updateBulbColor(id: bulb.id, colorId: option.id)
+                            viewModel.updateBulbFitting(id: bulb.id, fittingSize: size)
                         } label: {
                             Label {
-                                Text(option.displayName)
+                                Text(size)
                             } icon: {
-                                Circle()
-                                    .fill(option.color)
-                                    .frame(width: 14, height: 14)
+                                Image(family.imageAsset)
+                                    .renderingMode(.template)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 16, height: 16)
                             }
                         }
                     }
-                } label: {
-                    Label {
-                        Text("Color: \(colorOption.displayName)")
-                    } icon: {
-                        Circle()
-                            .fill(colorOption.color)
-                            .frame(width: 14, height: 14)
-                    }
                 }
-
-                Button {
-                    viewModel.toggleBulbWorking(id: bulb.id)
-                } label: {
-                    Label(
-                        bulb.isWorking ? "Status: Working" : "Status: Broken",
-                        systemImage: bulb.isWorking ? "checkmark.circle" : "xmark.circle"
-                    )
+            } label: {
+                Label {
+                    Text("Fitting: \(bulb.fittingSize)")
+                } icon: {
+                    Image(fittingAsset)
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
                 }
             }
-            .accessibilityLabel(Text("Bulb"))
-            .accessibilityIdentifier("FloorPlanBulb")
+
+            Menu {
+                ForEach(BulbColorOption.options) { option in
+                    Button {
+                        viewModel.updateBulbColor(id: bulb.id, colorId: option.id)
+                    } label: {
+                        Label {
+                            Text(option.displayName)
+                        } icon: {
+                            Circle()
+                                .fill(option.color)
+                                .frame(width: 14, height: 14)
+                        }
+                    }
+                }
+            } label: {
+                Label {
+                    Text("Color: \(colorOption.displayName)")
+                } icon: {
+                    Circle()
+                        .fill(colorOption.color)
+                        .frame(width: 14, height: 14)
+                }
+            }
+
+            Menu {
+                Button {
+                    viewModel.setBulbWorking(id: bulb.id, isWorking: true)
+                } label: {
+                    Label(
+                        "Working",
+                        systemImage: bulb.isWorking ? "checkmark.circle.fill" : "circle"
+                    )
+                }
+                Button {
+                    viewModel.setBulbWorking(id: bulb.id, isWorking: false)
+                } label: {
+                    Label(
+                        "Broken",
+                        systemImage: bulb.isWorking ? "circle" : "xmark.circle.fill"
+                    )
+                }
+            } label: {
+                Label(
+                    bulb.isWorking ? "Status: Working" : "Status: Broken",
+                    systemImage: bulb.isWorking ? "checkmark.circle" : "xmark.circle"
+                )
+            }
+        } label: {
+            bulbView
+        }
+        .simultaneousGesture(bulbDragGesture())
+        .accessibilityLabel(Text("Bulb"))
+        .accessibilityIdentifier("FloorPlanBulb")
     }
 
     private func bulbDragGesture() -> some Gesture {
