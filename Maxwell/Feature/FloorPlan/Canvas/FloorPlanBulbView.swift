@@ -16,7 +16,7 @@ struct FloorPlanBulbView: View {
     @Bindable var viewModel: FloorPlanBuilderViewModel
 
     @GestureState private var dragTranslation: CGSize = .zero
-    @ScaledMetric(relativeTo: .body) private var bulbSize: CGFloat = 18
+    @ScaledMetric(relativeTo: .body) private var bulbSize: CGFloat = 24
 
     var body: some View {
         let adjustedTranslation = adjustedTranslation(for: dragTranslation)
@@ -24,18 +24,109 @@ struct FloorPlanBulbView: View {
             x: bulb.position.x + adjustedTranslation.width,
             y: bulb.position.y + adjustedTranslation.height
         )
+        let colorOption = BulbColorOption.option(for: bulb.colorId) ?? BulbColorOption.defaultOption
+        let fittingAsset = BulbFittingFamily.imageAsset(for: bulb.fittingSize)
+        let bulbOpacity = bulb.isWorking ? 1.0 : 0.35
 
-        Circle()
-            .fill(.tint)
+        let fittingIconSize: CGFloat = 18
+        let colorIconSize: CGFloat = 14
+
+        let bulbView = Circle()
+            .fill(colorOption.color.opacity(bulbOpacity))
             .frame(width: bulbSize, height: bulbSize)
             .overlay {
                 Circle()
-                    .strokeBorder(.secondary, lineWidth: 2)
+                    .strokeBorder(.secondary.opacity(bulbOpacity), lineWidth: 2)
             }
-            .position(x: center.x + proposedPosition.x, y: center.y + proposedPosition.y)
-            .gesture(bulbDragGesture())
-            .accessibilityLabel(Text("Bulb"))
-            .accessibilityIdentifier("FloorPlanBulb")
+
+        let menu = Menu {
+            Menu {
+                ForEach(BulbFittingFamily.catalog) { family in
+                    ForEach(family.sizes, id: \.self) { size in
+                        Button {
+                            viewModel.updateBulbFitting(id: bulb.id, fittingSize: size)
+                        } label: {
+                            HStack(spacing: BulbSpacing.sm) {
+                                Image(family.imageAsset)
+                                    .renderingMode(.template)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: fittingIconSize, height: fittingIconSize)
+                                Text(size)
+                            }
+                        }
+                    }
+                }
+            } label: {
+                HStack(spacing: BulbSpacing.sm) {
+                    Image(fittingAsset)
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: fittingIconSize, height: fittingIconSize)
+                    Text("Fitting: \(bulb.fittingSize)")
+                }
+            }
+
+            Menu {
+                ForEach(BulbColorOption.options) { option in
+                    Button {
+                        viewModel.updateBulbColor(id: bulb.id, colorId: option.id)
+                    } label: {
+                        HStack(spacing: BulbSpacing.sm) {
+                            Circle()
+                                .fill(option.color)
+                                .frame(width: colorIconSize, height: colorIconSize)
+                            Text(option.displayName)
+                        }
+                    }
+                }
+            } label: {
+                HStack(spacing: BulbSpacing.sm) {
+                    Circle()
+                        .fill(colorOption.color)
+                        .frame(width: colorIconSize, height: colorIconSize)
+                    Text("Color: \(colorOption.displayName)")
+                }
+            }
+
+            Menu {
+                Button {
+                    viewModel.setBulbWorking(id: bulb.id, isWorking: true)
+                } label: {
+                    Label(
+                        "Working",
+                        systemImage: bulb.isWorking ? "checkmark.circle.fill" : "circle"
+                    )
+                }
+                Button {
+                    viewModel.setBulbWorking(id: bulb.id, isWorking: false)
+                } label: {
+                    Label(
+                        "Broken",
+                        systemImage: bulb.isWorking ? "circle" : "xmark.circle.fill"
+                    )
+                }
+            } label: {
+                Label(
+                    bulb.isWorking ? "Status: Working" : "Status: Broken",
+                    systemImage: bulb.isWorking ? "checkmark.circle" : "xmark.circle"
+                )
+            }
+        } label: {
+            Color.clear
+                .frame(width: bulbSize, height: bulbSize)
+        }
+
+        ZStack {
+            bulbView
+            menu
+        }
+        .frame(width: bulbSize, height: bulbSize)
+        .position(x: center.x + proposedPosition.x, y: center.y + proposedPosition.y)
+        .simultaneousGesture(bulbDragGesture())
+        .accessibilityLabel(Text("Bulb"))
+        .accessibilityIdentifier("FloorPlanBulb")
     }
 
     private func bulbDragGesture() -> some Gesture {

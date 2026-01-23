@@ -189,15 +189,21 @@ struct MaxwellDataStore {
         roomId: UUID,
         name: String,
         bulbTypeId: String,
+        fittingSize: String = Bulb.defaultFittingSize,
+        colorId: String = Bulb.defaultColorId,
         isWorking: Bool = true,
-        markedNotWorkingAt: Date? = nil
+        markedNotWorkingAt: Date? = nil,
+        createdAt: Date = Date()
     ) throws -> Bulb {
         let bulb = Bulb(
             roomId: roomId,
             name: name,
             bulbTypeId: bulbTypeId,
+            fittingSize: fittingSize,
+            colorId: colorId,
             isWorking: isWorking,
-            markedNotWorkingAt: markedNotWorkingAt
+            markedNotWorkingAt: markedNotWorkingAt,
+            createdAt: createdAt
         )
         try dbWriter.write { db in
             try Bulb.insert { bulb }.execute(db)
@@ -223,6 +229,28 @@ struct MaxwellDataStore {
         try dbWriter.write { db in
             try Bulb.find(id)
                 .update { $0.roomId = roomId }
+                .execute(db)
+        }
+    }
+
+    func updateBulbConfiguration(id: UUID, fittingSize: String, colorId: String) throws {
+        try dbWriter.write { db in
+            try Bulb.find(id)
+                .update {
+                    $0.fittingSize = fittingSize
+                    $0.colorId = colorId
+                }
+                .execute(db)
+        }
+    }
+
+    func updateBulbWorkingState(id: UUID, isWorking: Bool, markedNotWorkingAt: Date?) throws {
+        try dbWriter.write { db in
+            try Bulb.find(id)
+                .update {
+                    $0.isWorking = isWorking
+                    $0.markedNotWorkingAt = markedNotWorkingAt
+                }
                 .execute(db)
         }
     }

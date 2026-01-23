@@ -99,6 +99,14 @@ enum AppDatabase {
             }
         }
 
+        migrator.registerMigration("addBulbConfig") { db in
+            try db.alter(table: "bulbs") { t in
+                t.add(column: "fittingSize", .text).notNull().defaults(to: "GU10")
+                t.add(column: "colorId", .text).notNull().defaults(to: "warm-2700")
+                t.add(column: "createdAt", .datetime).notNull().defaults(to: Date())
+            }
+        }
+
         return migrator
     }
 }

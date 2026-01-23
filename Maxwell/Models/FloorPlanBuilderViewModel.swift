@@ -27,6 +27,8 @@ final class FloorPlanBuilderViewModel {
     private var bulbPlacementIDs: [UUID: UUID]
 
     private let defaultBulbTypeId = "default"
+    private let defaultBulbFittingSize = Bulb.defaultFittingSize
+    private let defaultBulbColorId = Bulb.defaultColorId
 
     init(store: MaxwellDataStore) {
         self.store = store
@@ -199,7 +201,18 @@ final class FloorPlanBuilderViewModel {
         let local = localPoint(from: position, center: room.center, rotation: room.rotation)
         do {
             let bulbName = defaultBulbName(for: selectedFloor.bulbs.count)
-            let bulb = try store.createBulb(roomId: roomID, name: bulbName, bulbTypeId: defaultBulbTypeId)
+            let inheritedBulb = mostRecentBulb(in: roomID)
+            let fittingSize = inheritedBulb?.fittingSize ?? defaultBulbFittingSize
+            let colorId = inheritedBulb?.colorId ?? defaultBulbColorId
+            let createdAt = Date()
+            let bulb = try store.createBulb(
+                roomId: roomID,
+                name: bulbName,
+                bulbTypeId: defaultBulbTypeId,
+                fittingSize: fittingSize,
+                colorId: colorId,
+                createdAt: createdAt
+            )
             let placement = try store.createBulbPlacement(
                 bulbId: bulb.id,
                 roomId: roomID,
@@ -208,7 +221,17 @@ final class FloorPlanBuilderViewModel {
             )
             bulbPlacementIDs[bulb.id] = placement.id
             updateSelectedFloor { floor in
-                floor.bulbs.append(FloorPlanBulb(id: bulb.id, position: position, roomID: roomID))
+                floor.bulbs.append(
+                    FloorPlanBulb(
+                        id: bulb.id,
+                        position: position,
+                        roomID: roomID,
+                        fittingSize: fittingSize,
+                        colorId: colorId,
+                        isWorking: bulb.isWorking,
+                        createdAt: createdAt
+                    )
+                )
             }
         } catch {
             assertionFailure("Failed to add bulb: \(error)")
@@ -236,8 +259,62 @@ final class FloorPlanBuilderViewModel {
         }
     }
 
+    func updateBulbFitting(id: UUID, fittingSize: String) {
+        guard let bulb = selectedFloor.bulbs.first(where: { $0.id == id }) else { return }
+        guard bulb.fittingSize != fittingSize else { return }
+        updateSelectedFloor { floor in
+            guard let index = floor.bulbs.firstIndex(where: { $0.id == id }) else { return }
+            floor.bulbs[index].fittingSize = fittingSize
+        }
+        do {
+            try store.updateBulbConfiguration(id: id, fittingSize: fittingSize, colorId: bulb.colorId)
+        } catch {
+            assertionFailure("Failed to update bulb fitting: \(error)")
+        }
+    }
+
+    func updateBulbColor(id: UUID, colorId: String) {
+        guard let bulb = selectedFloor.bulbs.first(where: { $0.id == id }) else { return }
+        guard bulb.colorId != colorId else { return }
+        updateSelectedFloor { floor in
+            guard let index = floor.bulbs.firstIndex(where: { $0.id == id }) else { return }
+            floor.bulbs[index].colorId = colorId
+        }
+        do {
+            try store.updateBulbConfiguration(id: id, fittingSize: bulb.fittingSize, colorId: colorId)
+        } catch {
+            assertionFailure("Failed to update bulb color: \(error)")
+        }
+    }
+
+    func toggleBulbWorking(id: UUID) {
+        guard let bulb = selectedFloor.bulbs.first(where: { $0.id == id }) else { return }
+        setBulbWorking(id: id, isWorking: !bulb.isWorking)
+    }
+
+    func setBulbWorking(id: UUID, isWorking: Bool) {
+        guard let bulb = selectedFloor.bulbs.first(where: { $0.id == id }) else { return }
+        guard bulb.isWorking != isWorking else { return }
+        let markedNotWorkingAt = isWorking ? nil : Date()
+        updateSelectedFloor { floor in
+            guard let index = floor.bulbs.firstIndex(where: { $0.id == id }) else { return }
+            floor.bulbs[index].isWorking = isWorking
+        }
+        do {
+            try store.updateBulbWorkingState(id: id, isWorking: isWorking, markedNotWorkingAt: markedNotWorkingAt)
+        } catch {
+            assertionFailure("Failed to update bulb status: \(error)")
+        }
+    }
+
     func roomContaining(point: CGPoint) -> FloorPlanRoom? {
         selectedFloor.rooms.first(where: { $0.contains(point: point) })
+    }
+
+    private func mostRecentBulb(in roomID: UUID) -> FloorPlanBulb? {
+        selectedFloor.bulbs
+            .filter { $0.roomID == roomID }
+            .max(by: { $0.createdAt < $1.createdAt })
     }
 
     func overlaps(candidate: FloorPlanRoom, excluding roomID: UUID? = nil) -> Bool {
@@ -390,7 +467,17 @@ final class FloorPlanBuilderViewModel {
                     guard let placement = placementByBulbId[bulb.id] else { continue }
                     let local = CGPoint(x: placement.positionX, y: placement.positionY)
                     let global = globalPoint(from: local, center: floorRoom.center, rotation: floorRoom.rotation)
-                    floorBulbs.append(FloorPlanBulb(id: bulb.id, position: global, roomID: room.id))
+                    floorBulbs.append(
+                        FloorPlanBulb(
+                            id: bulb.id,
+                            position: global,
+                            roomID: room.id,
+                            fittingSize: bulb.fittingSize,
+                            colorId: bulb.colorId,
+                            isWorking: bulb.isWorking,
+                            createdAt: bulb.createdAt
+                        )
+                    )
                     bulbPlacementIDs[bulb.id] = placement.id
                 }
             }

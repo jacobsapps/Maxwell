@@ -96,4 +96,44 @@ struct FloorPlanBuilderViewModelTests {
         let persistedName = reloaded.selectedFloor.rooms.first?.name
         #expect(persistedName == "Office")
     }
+
+    @Test @MainActor func newBulbInheritsMostRecentRoomConfig() throws {
+        let viewModel = try makeViewModel()
+        viewModel.addRoom(center: .zero, size: CGSize(width: 100, height: 100), rotation: .zero)
+
+        guard let room = viewModel.selectedFloor.rooms.first else {
+            #expect(Bool(false))
+            return
+        }
+
+        viewModel.addBulb(at: CGPoint(x: 0, y: 0), roomID: room.id)
+        guard let firstBulb = viewModel.selectedFloor.bulbs.last else {
+            #expect(Bool(false))
+            return
+        }
+
+        viewModel.updateBulbFitting(id: firstBulb.id, fittingSize: "E27")
+        viewModel.updateBulbColor(id: firstBulb.id, colorId: "cool-5000")
+
+        viewModel.addBulb(at: CGPoint(x: 10, y: 10), roomID: room.id)
+        guard let secondBulb = viewModel.selectedFloor.bulbs.last else {
+            #expect(Bool(false))
+            return
+        }
+
+        #expect(secondBulb.fittingSize == "E27")
+        #expect(secondBulb.colorId == "cool-5000")
+
+        viewModel.updateBulbFitting(id: secondBulb.id, fittingSize: "G9")
+        viewModel.updateBulbColor(id: secondBulb.id, colorId: "warm-2700")
+
+        viewModel.addBulb(at: CGPoint(x: 20, y: 20), roomID: room.id)
+        guard let thirdBulb = viewModel.selectedFloor.bulbs.last else {
+            #expect(Bool(false))
+            return
+        }
+
+        #expect(thirdBulb.fittingSize == "G9")
+        #expect(thirdBulb.colorId == "warm-2700")
+    }
 }
